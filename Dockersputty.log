@@ -1,0 +1,1061 @@
+=~=~=~=~=~=~=~=~=~=~=~= PuTTY log 2019.07.19 09:59:57 =~=~=~=~=~=~=~=~=~=~=~=
+login as: root
+root@192.168.0.104's password: 
+Last login: Thu Jul 18 22:58:49 2019 from 192.168.0.103
+]0;root@localhost:~[?1034h[root@localhost ~]# ls
+anaconda-ks.cfg  [0m[01;34mDownloads[0m             [01;34mPictures[0m   [01;34mudemy-docker-mastery[0m
+[01;34mcode[0m             get-docker.sh         [01;34mPublic[0m     [01;34mVideos[0m
+[01;34mDesktop[0m          initial-setup-ks.cfg  [01;34mTemplates[0m
+[01;34mDocuments[0m        [01;34mMusic[0m                 [01;34mtmp[0m
+]0;root@localhost:~[root@localhost ~]# cd udemy-docker-mastery/
+]0;root@localhost:~/udemy-docker-mastery[root@localhost udemy-docker-mastery]# ls
+[0m[01;34mbindmount-sample-1[0m       [01;34mdockerfile-sample-2[0m  [01;34mregistry-sample-1[0m  [01;34mswarm-stack-3[0m
+[01;34mcompose-assignment-1[0m     [01;34mdockerfile-sample-3[0m  [01;34msecrets-sample-1[0m   [01;34mswarm-stack-4[0m
+[01;34mcompose-assignment-2[0m     [01;34mdockerfile-sample-4[0m  [01;34msecrets-sample-2[0m   [01;34mswarm-stack-5[0m
+[01;34mcompose-sample-1[0m         [01;34mdockerfile-sample-5[0m  [01;34mslack-chat[0m         [01;34mswarm-stack-6[0m
+[01;34mcompose-sample-2[0m         [01;34mexample-voting-app[0m   [01;34mswarm-app-1[0m        [01;34mvisualizer[0m
+[01;34mcompose-sample-3[0m         [01;34mhealthcheck-1[0m        [01;34mswarm-app-2[0m
+[01;34mdockerfile-assignment-1[0m  LICENSE              [01;34mswarm-stack-1[0m
+[01;34mdockerfile-sample-1[0m      README.md            [01;34mswarm-stack-2[0m
+]0;root@localhost:~/udemy-docker-mastery[root@localhost udemy-docker-mastery]# cd dck[K[Kockerfile-sample-1
+]0;root@localhost:~/udemy-docker-mastery/dockerfile-sample-1[root@localhost dockerfile-sample-1]# ll
+total 4
+-rw-r--r--. 1 root root 2471 Jul 15 20:51 Dockerfile
+]0;root@localhost:~/udemy-docker-mastery/dockerfile-sample-1[root@localhost dockerfile-sample-1]# vim Dockerfile 
+[?1049h[?1h=[2;1H▽[6n[1;1H  [1;1H[1;24r[?12;25h[?12l[?25h[27m[m[H[2J[?25l[24;1H"Dockerfile" 54L, 2471C[>c[1;1H[34m# NOTE: this example is taken from the default Dockerfile for the official nginxx[2;1H Docker Hub Repo
+# https://hub.docker.com/_/nginx/
+# NOTE: This file is slightly different than the video, because nginx versions hh[5;1Have been updated 
+#       to match the latest standards from docker hub... but it's doing the samee[7;1H thing as the video
+#       describes[m
+FROM debian:stretch-slim
+[34m# all images must have a FROM
+# usually from a minimal Linux distribution like debian or (even better) alpine
+# if you truly want to start with an empty container, use FROM scratch[m
+
+ENV NGINX_VERSION 1.13.6-1~stretch
+ENV NJS_VERSION   1.13.6.0.1.14-1~stretch
+[34m# optional environment variable that's used in later lines and set as envvar whee[17;1Hn container is running[m
+
+RUN apt-get update \[20;9H&& apt-get install --no-install-recommends --no-install-suggests -y gnupp[21;1Hg1 \[22;9H&& \[23;9HNGINX_GPGKEY=573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62; \[24;63H1,1[11CTop[1;1H[?12l[?25h[27m[m[H[2J[?25l[1;1H[34m# NOTE: this example is taken from the default Dockerfile for the official nginx Docker Hub Repo
+# https://hub.docker.com/_/nginx/
+# NOTE: This file is slightly different than the video, because nginx versions have been updated 
+#       to match the latest standards from docker hub... but it's doing the same thing as the video
+#       describes[m
+FROM debian:stretch-slim
+[34m# all images must have a FROM
+# usually from a minimal Linux distribution like debian or (even better) alpine
+# if you truly want to start with an empty container, use FROM scratch[m
+
+ENV NGINX_VERSION 1.13.6-1~stretch
+ENV NJS_VERSION   1.13.6.0.1.14-1~stretch
+[34m# optional environment variable that's used in later lines and set as envvar when container is running[m
+
+RUN apt-get update \[16;9H&& apt-get install --no-install-recommends --no-install-suggests -y gnupg1 \[17;9H&& \[18;9HNGINX_GPGKEY=573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62; \[19;9Hfound=[31m''[m; \[20;9Hfor server in \[21;17Hha.pool.sks-keyservers.net \[22;17Hhkp://keyserver.ubuntu.com:80 \[23;17Hhkp://p80.pool.sks-keyservers.net:80 \[24;17Hpgp.mit.edu \[25;9H; do \[26;17Hecho [31m"Fetching GPG key $NGINX_GPGKEY from $server"[m; \[27;17Hapt-key adv --keyserver [31m"$server"[m --keyserver-options timeout=10 --recv-keys [31m"$NGINX_GPGKEY"[m && found=yes && break; \[28;9Hdone; \[29;9Htest -z [31m"$found"[m && echo >&2 [31m"error: failed to fetch GPG key $NGINX_GPGKEY"[m && exit 1; \[30;9Hapt-get remove --purge -y gnupg1 && apt-get -y --purge autoremove && rm -rf /var/lib/apt/lists/* \[31;9H&& echo [31m"deb http://nginx.org/packages/mainline/debian/ stretch nginx"[m >> /etc/apt/sources.list \[32;9H&& apt-get update \[33;9H&& apt-get install --no-install-recommends --no-install-suggests -y \[34;49Hnginx=${NGINX_VERSION} \[35;49Hnginx-module-xslt=${NGINX_VERSION} \[36;49Hnginx-module-geoip=${NGINX_VERSION} \[37;49Hnginx-module-image-filter=${NGINX_VERSION} \[38;49Hnginx-module-njs=${NJS_VERSION} \[39;49Hgettext-base \[40;9H&& rm -rf /var/lib/apt/lists/*
+[34m# optional commands to run at shell inside container at build time
+# this one adds package repo for nginx from nginx.org and installs it[m
+
+RUN ln -sf /dev/stdout /var/log/nginx/access.log \[45;9H&& ln -sf /dev/stderr /var/log/nginx/error.log
+[34m# forward request and error logs to docker log collector[m
+
+EXPOSE 80 443
+[34m# expose these ports on the docker virtual network[m[50;172H1,1[11CTop[1;1H[?12l[?25h[?25l[50;172H2[2;1H[?12l[?25h[?25l[50;172H3[3;1H[?12l[?25h[?25l[50;172H4[4;1H[?12l[?25h[?25l[50;172H5[5;1H[?12l[?25h[?25l[50;172H6[6;1H[?12l[?25h[?25l[50;172H7[7;1H[?12l[?25h[?25l[50;172H8[8;1H[?12l[?25h[?25l[50;172H9[9;1H[?12l[?25h[?25l[50;172H10,0-1[10;1H[?12l[?25h[?25l[50;173H1,1  [11;1H[?12l[?25h[?25l[50;173H2[12;1H[?12l[?25h[?25l[50;173H3[13;1H[?12l[?25h[?25l[50;173H4,0-1[14;1H[?12l[?25h[?25l[50;173H5,1  [15;1H[?12l[?25h[?25l[50;173H6,1-8[16;8H[?12l[?25h[?25l[50;173H7[17;8H[?12l[?25h[?25l[50;173H8[18;8H[?12l[?25h[?25l[50;173H9[19;8H[?12l[?25h[?25l[50;172H20[20;8H[?12l[?25h[?25l[50;173H1[21;8H[?12l[?25h[?25l[50;173H2[22;8H[?12l[?25h[?25l[50;173H3[23;8H[?12l[?25h[?25l[50;173H4[24;8H[?12l[?25h[?25l[50;173H5[25;8H[?12l[?25h[?25l[50;173H6[26;8H[?12l[?25h[?25l[50;173H7[27;8H[?12l[?25h[?25l[50;173H8[28;8H[?12l[?25h[?25l[50;173H9[29;8H[?12l[?25h[?25l[50;172H30[30;8H[?12l[?25h[?25l[50;173H1[31;8H[?12l[?25h[?25l[50;173H2[32;8H[?12l[?25h[?25l[50;173H3[33;8H[?12l[?25h[?25l[50;173H4[34;8H[?12l[?25h[?25l[50;173H5[35;8H[?12l[?25h[?25l[50;173H6[36;8H[?12l[?25h[?25l[50;173H7[37;8H[?12l[?25h[?25l[50;173H8[38;8H[?12l[?25h[?25l[50;173H9[39;8H[?12l[?25h[?25l[50;172H40[40;8H[?12l[?25h[?25l[50;173H1,1  [41;1H[?12l[?25h[?25l[50;173H2[42;1H[?12l[?25h[?25l[50;173H3,0-1[43;1H[?12l[?25h[?25l[50;173H4,1  [44;1H[?12l[?25h[?25l[50;173H5,1-8[45;8H[?12l[?25h[?25l[50;173H6,1  [46;1H[?12l[?25h[?25l[50;173H7,0-1[47;1H[?12l[?25h[?25l[50;173H8,1  [48;1H[?12l[?25h[?25l[50;173H9[49;1H[?12l[?25h[?25l[1;49r[49;1H
+[1;50r[49;1H[34m# you still need to use -p or -P to open/forward these ports on host[m[50;172H[K[50;172H50,1[10C20%[49;1H[?12l[?25h[?25l[1;49r[49;1H
+[1;50r[50;172H[K[50;172H51,0-1[8C40%[49;1H[?12l[?25h[?25l[1;49r[49;1H
+[1;50r[49;1HCMD [[31m"nginx"[m, [31m"-g"[m, [31m"daemon off;"[m][50;172H[K[50;172H52,1[10C60%[49;1H[?12l[?25h[?25l[1;49r[49;1H
+[1;50r[49;1H[34m# required: run this command when container is launched[m[50;172H[K[50;172H53,1[10C80%[49;1H[?12l[?25h[?25l[1;49r[49;1H
+[1;50r[49;1H[34m# only one CMD allowed, so if there are multiple, last one wins[m[50;172H[K[50;172H54,1[10CBot[49;1H[?12l[?25h[?25l[50;172H[K[50;1H:[?12l[?25hw[?25l[?12l[?25hq[?25l[?12l[?25h[?25l"Dockerfile" 54L, 2471C written
+[?1l>[?12l[?25h[?1049l]0;root@localhost:~/udemy-docker-mastery/dockerfile-sample-1[root@localhost dockerfile-sample-1]# docker image build [K[root@localhost dockerfile-sample-1]# docker image build -t customni[Kginx .
+Sending build context to Docker daemon  4.096kB
+Step 1/7 : FROM debian:stretch-slim
+stretch-slim: Pulling from library/debian
+
+[1A[1K[K0a4690c5d889: Pulling fs layer [1B[1A[1K[K0a4690c5d889: Downloading  228.5kB/22.49MB[1B[1A[1K[K0a4690c5d889: Downloading  687.2kB/22.49MB[1B[1A[1K[K0a4690c5d889: Downloading  1.375MB/22.49MB[1B[1A[1K[K0a4690c5d889: Downloading  2.063MB/22.49MB[1B[1A[1K[K0a4690c5d889: Downloading  2.288MB/22.49MB[1B[1A[1K[K0a4690c5d889: Downloading  3.439MB/22.49MB[1B[1A[1K[K0a4690c5d889: Downloading  4.127MB/22.49MB[1B[1A[1K[K0a4690c5d889: Downloading  4.357MB/22.49MB[1B[1A[1K[K0a4690c5d889: Downloading  5.962MB/22.49MB[1B[1A[1K[K0a4690c5d889: Downloading  6.421MB/22.49MB[1B[1A[1K[K0a4690c5d889: Downloading  6.651MB/22.49MB[1B[1A[1K[K0a4690c5d889: Downloading  7.568MB/22.49MB[1B[1A[1K[K0a4690c5d889: Downloading  8.715MB/22.49MB[1B[1A[1K[K0a4690c5d889: Downloading  9.399MB/22.49MB[1B[1A[1K[K0a4690c5d889: Downloading  10.55MB/22.49MB[1B[1A[1K[K0a4690c5d889: Downloading  10.78MB/22.49MB[1B[1A[1K[K0a4690c5d889: Downloading  13.31MB/22.49MB[1B[1A[1K[K0a4690c5d889: Downloading  13.77MB/22.49MB[1B[1A[1K[K0a4690c5d889: Downloading     14MB/22.49MB[1B[1A[1K[K0a4690c5d889: Downloading  14.23MB/22.49MB[1B[1A[1K[K0a4690c5d889: Downloading  16.07MB/22.49MB[1B[1A[1K[K0a4690c5d889: Downloading   16.3MB/22.49MB[1B[1A[1K[K0a4690c5d889: Downloading  17.23MB/22.49MB[1B[1A[1K[K0a4690c5d889: Downloading  18.38MB/22.49MB[1B[1A[1K[K0a4690c5d889: Downloading  19.75MB/22.49MB[1B[1A[1K[K0a4690c5d889: Downloading  20.67MB/22.49MB[1B[1A[1K[K0a4690c5d889: Downloading   20.9MB/22.49MB[1B[1A[1K[K0a4690c5d889: Verifying Checksum [1B[1A[1K[K0a4690c5d889: Download complete [1B[1A[1K[K0a4690c5d889: Extracting  229.4kB/22.49MB[1B[1A[1K[K0a4690c5d889: Extracting  2.294MB/22.49MB[1B[1A[1K[K0a4690c5d889: Extracting  4.358MB/22.49MB[1B[1A[1K[K0a4690c5d889: Extracting  6.423MB/22.49MB[1B[1A[1K[K0a4690c5d889: Extracting  8.028MB/22.49MB[1B[1A[1K[K0a4690c5d889: Extracting  9.863MB/22.49MB[1B[1A[1K[K0a4690c5d889: Extracting  11.47MB/22.49MB[1B[1A[1K[K0a4690c5d889: Extracting  13.07MB/22.49MB[1B[1A[1K[K0a4690c5d889: Extracting  14.68MB/22.49MB[1B[1A[1K[K0a4690c5d889: Extracting  16.29MB/22.49MB[1B[1A[1K[K0a4690c5d889: Extracting  18.12MB/22.49MB[1B[1A[1K[K0a4690c5d889: Extracting  19.73MB/22.49MB[1B[1A[1K[K0a4690c5d889: Extracting  20.41MB/22.49MB[1B[1A[1K[K0a4690c5d889: Extracting  21.33MB/22.49MB[1B[1A[1K[K0a4690c5d889: Extracting  21.56MB/22.49MB[1B[1A[1K[K0a4690c5d889: Extracting  22.25MB/22.49MB[1B[1A[1K[K0a4690c5d889: Extracting  22.49MB/22.49MB[1B[1A[1K[K0a4690c5d889: Pull complete [1BDigest: sha256:0c04edb9ae10feb7ac03a659dd41e16c79e04fdb2b10cf93c3cbcef1fd6cc1d5
+Status: Downloaded newer image for debian:stretch-slim
+ ---> 226ee7ba65a2
+Step 2/7 : ENV NGINX_VERSION 1.13.6-1~stretch
+ ---> Running in fe66efb58e99
+Removing intermediate container fe66efb58e99
+ ---> e5c20c3fc91b
+Step 3/7 : ENV NJS_VERSION   1.13.6.0.1.14-1~stretch
+ ---> Running in c32d29986ce4
+Removing intermediate container c32d29986ce4
+ ---> 22f2683889c6
+Step 4/7 : RUN apt-get update 	&& apt-get install --no-install-recommends --no-install-suggests -y gnupg1 	&& 	NGINX_GPGKEY=573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62; 	found=''; 	for server in 		ha.pool.sks-keyservers.net 		hkp://keyserver.ubuntu.com:80 		hkp://p80.pool.sks-keyservers.net:80 		pgp.mit.edu 	; do 		echo "Fetching GPG key $NGINX_GPGKEY from $server"; 		apt-key adv --keyserver "$server" --keyserver-options timeout=10 --recv-keys "$NGINX_GPGKEY" && found=yes && break; 	done; 	test -z "$found" && echo >&2 "error: failed to fetch GPG key $NGINX_GPGKEY" && exit 1; 	apt-get remove --purge -y gnupg1 && apt-get -y --purge autoremove && rm -rf /var/lib/apt/lists/* 	&& echo "deb http://nginx.org/packages/mainline/debian/ stretch nginx" >> /etc/apt/sources.list 	&& apt-get update 	&& apt-get install --no-install-recommends --no-install-suggests -y 						nginx=${NGINX_VERSION} 						nginx-module-xslt=${NGINX_VERSION} 						nginx-module-geoip=${NGINX_VERSION} 						nginx-module-image-filter=${NGINX_VERSION} 						nginx-module-njs=${NJS_VERSION} 						gettext-base 	&& rm -rf /var/lib/apt/lists/*
+ ---> Running in 336516004a38
+Get:1 http://security-cdn.debian.org/debian-security stretch/updates InRelease [94.3 kB]
+Ign:2 http://cdn-fastly.deb.debian.org/debian stretch InRelease
+Get:3 http://security-cdn.debian.org/debian-security stretch/updates/main amd64 Packages [499 kB]
+Get:4 http://cdn-fastly.deb.debian.org/debian stretch-updates InRelease [91.0 kB]
+Get:5 http://cdn-fastly.deb.debian.org/debian stretch Release [118 kB]
+Get:6 http://cdn-fastly.deb.debian.org/debian stretch-updates/main amd64 Packages [27.4 kB]
+Get:7 http://cdn-fastly.deb.debian.org/debian stretch Release.gpg [2434 B]
+Get:8 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 Packages [7082 kB]
+Fetched 7915 kB in 5s (1366 kB/s)
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  libreadline7 readline-common
+Suggested packages:
+  libpcsclite1 parcimonie xloadimage | imagemagick | eog readline-doc
+Recommended packages:
+  gnupg1-curl gnupg1-l10n libldap-2.4-2
+The following NEW packages will be installed:
+  gnupg1 libreadline7 readline-common
+0 upgraded, 3 newly installed, 0 to remove and 1 not upgraded.
+Need to get 822 kB of archives.
+After this operation, 1935 kB of additional disk space will be used.
+Get:1 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 readline-common all 7.0-3 [70.4 kB]
+Get:2 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libreadline7 amd64 7.0-3 [151 kB]
+Get:3 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 gnupg1 amd64 1.4.21-4+deb9u1 [601 kB]
+[91mdebconf: delaying package configuration, since apt-utils is not installed
+[0mFetched 822 kB in 1s (451 kB/s)
+Selecting previously unselected package readline-common.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 6316 files and directories currently installed.)
+Preparing to unpack .../readline-common_7.0-3_all.deb ...
+Unpacking readline-common (7.0-3) ...
+Selecting previously unselected package libreadline7:amd64.
+Preparing to unpack .../libreadline7_7.0-3_amd64.deb ...
+Unpacking libreadline7:amd64 (7.0-3) ...
+Selecting previously unselected package gnupg1.
+Preparing to unpack .../gnupg1_1.4.21-4+deb9u1_amd64.deb ...
+Unpacking gnupg1 (1.4.21-4+deb9u1) ...
+Setting up readline-common (7.0-3) ...
+Setting up libreadline7:amd64 (7.0-3) ...
+Setting up gnupg1 (1.4.21-4+deb9u1) ...
+Processing triggers for libc-bin (2.24-11+deb9u4) ...
+Fetching GPG key 573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62 from ha.pool.sks-keyservers.net
+[91mWarning: apt-key output should not be parsed (stdout is not a terminal)
+[0mExecuting: /tmp/apt-key-gpghome.rXnYfCLXoL/gpg.1.sh --keyserver ha.pool.sks-keyservers.net --keyserver-options timeout=10 --recv-keys 573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62
+[91mgpg: requesting key 7BD9BF62 from hkp server ha.pool.sks-keyservers.net
+[0m[91mgpg: key 7BD9BF62: public key "nginx signing key <signing-key@nginx.com>" imported
+gpg: Total number processed: 1
+gpg:               imported: 1  (RSA: 1)
+[0mReading package lists...
+Building dependency tree...
+Reading state information...
+The following packages were automatically installed and are no longer required:
+  libreadline7 readline-common
+Use 'apt autoremove' to remove them.
+The following packages will be REMOVED:
+  gnupg1*
+0 upgraded, 0 newly installed, 1 to remove and 1 not upgraded.
+After this operation, 1418 kB disk space will be freed.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 6370 files and directories currently installed.)
+Removing gnupg1 (1.4.21-4+deb9u1) ...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following packages will be REMOVED:
+  libreadline7* readline-common*
+0 upgraded, 0 newly installed, 2 to remove and 1 not upgraded.
+After this operation, 517 kB disk space will be freed.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 6340 files and directories currently installed.)
+Removing libreadline7:amd64 (7.0-3) ...
+Removing readline-common (7.0-3) ...
+Processing triggers for libc-bin (2.24-11+deb9u4) ...
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 6316 files and directories currently installed.)
+Purging configuration files for readline-common (7.0-3) ...
+Get:1 http://security-cdn.debian.org/debian-security stretch/updates InRelease [94.3 kB]
+Get:3 http://nginx.org/packages/mainline/debian stretch InRelease [2866 B]
+Ign:2 http://cdn-fastly.deb.debian.org/debian stretch InRelease
+Get:4 http://security-cdn.debian.org/debian-security stretch/updates/main amd64 Packages [499 kB]
+Get:6 http://nginx.org/packages/mainline/debian stretch/nginx amd64 Packages [56.6 kB]
+Get:5 http://cdn-fastly.deb.debian.org/debian stretch-updates InRelease [91.0 kB]
+Get:8 http://cdn-fastly.deb.debian.org/debian stretch-updates/main amd64 Packages [27.4 kB]
+Get:7 http://cdn-fastly.deb.debian.org/debian stretch Release [118 kB]
+Get:9 http://cdn-fastly.deb.debian.org/debian stretch Release.gpg [2434 B]
+Get:10 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 Packages [7082 kB]
+Fetched 7974 kB in 5s (1555 kB/s)
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  fontconfig-config fonts-dejavu-core libbsd0 libedit2 libexpat1
+  libfontconfig1 libfreetype6 libgd3 libgeoip1 libicu57 libjbig0
+  libjpeg62-turbo libncurses5 libpng16-16 libssl1.1 libtiff5 libwebp6 libx11-6
+  libx11-data libxau6 libxcb1 libxdmcp6 libxml2 libxpm4 libxslt1.1 ucf
+Suggested packages:
+  libgd-tools geoip-bin
+Recommended packages:
+  geoip-database libgpm2 xml-core
+The following NEW packages will be installed:
+  fontconfig-config fonts-dejavu-core gettext-base libbsd0 libedit2 libexpat1
+  libfontconfig1 libfreetype6 libgd3 libgeoip1 libicu57 libjbig0
+  libjpeg62-turbo libncurses5 libpng16-16 libssl1.1 libtiff5 libwebp6 libx11-6
+  libx11-data libxau6 libxcb1 libxdmcp6 libxml2 libxpm4 libxslt1.1 nginx
+  nginx-module-geoip nginx-module-image-filter nginx-module-njs
+  nginx-module-xslt ucf
+0 upgraded, 32 newly installed, 0 to remove and 1 not upgraded.
+Need to get 16.5 MB of archives.
+After this operation, 55.3 MB of additional disk space will be used.
+Get:1 http://nginx.org/packages/mainline/debian stretch/nginx amd64 nginx amd64 1.13.6-1~stretch [799 kB]
+Get:2 http://security-cdn.debian.org/debian-security stretch/updates/main amd64 libssl1.1 amd64 1.1.0k-1~deb9u1 [1356 kB]
+Get:4 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libxau6 amd64 1:1.0.8-1 [20.7 kB]
+Get:6 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 gettext-base amd64 0.19.8.1-2 [121 kB]
+Get:3 http://security-cdn.debian.org/debian-security stretch/updates/main amd64 libexpat1 amd64 2.2.0-2+deb9u2 [83.6 kB]
+Get:7 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libbsd0 amd64 0.8.3-1 [83.0 kB]
+Get:5 http://security-cdn.debian.org/debian-security stretch/updates/main amd64 libpng16-16 amd64 1.6.28-1+deb9u1 [280 kB]
+Get:8 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libncurses5 amd64 6.0+20161126-1+deb9u2 [93.4 kB]
+Get:9 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libedit2 amd64 3.1-20160903-3 [84.8 kB]
+Get:10 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libicu57 amd64 57.1-6+deb9u2 [7700 kB]
+Get:11 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libxml2 amd64 2.9.4+dfsg1-2.2+deb9u2 [920 kB]
+Get:12 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 ucf all 3.0036 [70.2 kB]
+Get:13 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 fonts-dejavu-core all 2.37-1 [1068 kB]
+Get:14 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 fontconfig-config all 2.11.0-6.7 [271 kB]
+Get:15 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libfreetype6 amd64 2.6.3-3.2 [438 kB]
+Get:16 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libfontconfig1 amd64 2.11.0-6.7+b1 [331 kB]
+Get:17 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libjpeg62-turbo amd64 1:1.5.1-2 [134 kB]
+Get:18 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libjbig0 amd64 2.1-3.1+b2 [31.0 kB]
+Get:19 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libtiff5 amd64 4.0.8-2+deb9u4 [238 kB]
+Get:20 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libwebp6 amd64 0.5.2-1 [235 kB]
+Get:21 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libxdmcp6 amd64 1:1.1.2-3 [26.3 kB]
+Get:22 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libxcb1 amd64 1.12-1 [133 kB]
+Get:23 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libx11-data all 2:1.6.4-3+deb9u1 [287 kB]
+Get:24 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libx11-6 amd64 2:1.6.4-3+deb9u1 [748 kB]
+Get:25 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libxpm4 amd64 1:3.5.12-1 [49.1 kB]
+Get:26 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libgd3 amd64 2.2.4-2+deb9u4 [132 kB]
+Get:27 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libgeoip1 amd64 1.6.9-4 [90.5 kB]
+Get:28 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libxslt1.1 amd64 1.1.29-2.1 [233 kB]
+Get:29 http://nginx.org/packages/mainline/debian stretch/nginx amd64 nginx-module-geoip amd64 1.13.6-1~stretch [71.9 kB]
+Get:30 http://nginx.org/packages/mainline/debian stretch/nginx amd64 nginx-module-image-filter amd64 1.13.6-1~stretch [75.9 kB]
+Get:31 http://nginx.org/packages/mainline/debian stretch/nginx amd64 nginx-module-njs amd64 1.13.6.0.1.14-1~stretch [213 kB]
+Get:32 http://nginx.org/packages/mainline/debian stretch/nginx amd64 nginx-module-xslt amd64 1.13.6-1~stretch [73.3 kB]
+[91mdebconf: delaying package configuration, since apt-utils is not installed
+[0mFetched 16.5 MB in 27s (602 kB/s)
+Selecting previously unselected package libxau6:amd64.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 6316 files and directories currently installed.)
+Preparing to unpack .../00-libxau6_1%3a1.0.8-1_amd64.deb ...
+Unpacking libxau6:amd64 (1:1.0.8-1) ...
+Selecting previously unselected package libssl1.1:amd64.
+Preparing to unpack .../01-libssl1.1_1.1.0k-1~deb9u1_amd64.deb ...
+Unpacking libssl1.1:amd64 (1.1.0k-1~deb9u1) ...
+Selecting previously unselected package gettext-base.
+Preparing to unpack .../02-gettext-base_0.19.8.1-2_amd64.deb ...
+Unpacking gettext-base (0.19.8.1-2) ...
+Selecting previously unselected package libbsd0:amd64.
+Preparing to unpack .../03-libbsd0_0.8.3-1_amd64.deb ...
+Unpacking libbsd0:amd64 (0.8.3-1) ...
+Selecting previously unselected package libncurses5:amd64.
+Preparing to unpack .../04-libncurses5_6.0+20161126-1+deb9u2_amd64.deb ...
+Unpacking libncurses5:amd64 (6.0+20161126-1+deb9u2) ...
+Selecting previously unselected package libedit2:amd64.
+Preparing to unpack .../05-libedit2_3.1-20160903-3_amd64.deb ...
+Unpacking libedit2:amd64 (3.1-20160903-3) ...
+Selecting previously unselected package libicu57:amd64.
+Preparing to unpack .../06-libicu57_57.1-6+deb9u2_amd64.deb ...
+Unpacking libicu57:amd64 (57.1-6+deb9u2) ...
+Selecting previously unselected package libxml2:amd64.
+Preparing to unpack .../07-libxml2_2.9.4+dfsg1-2.2+deb9u2_amd64.deb ...
+Unpacking libxml2:amd64 (2.9.4+dfsg1-2.2+deb9u2) ...
+Selecting previously unselected package ucf.
+Preparing to unpack .../08-ucf_3.0036_all.deb ...
+Moving old data out of the way
+Unpacking ucf (3.0036) ...
+Selecting previously unselected package fonts-dejavu-core.
+Preparing to unpack .../09-fonts-dejavu-core_2.37-1_all.deb ...
+Unpacking fonts-dejavu-core (2.37-1) ...
+Selecting previously unselected package fontconfig-config.
+Preparing to unpack .../10-fontconfig-config_2.11.0-6.7_all.deb ...
+Unpacking fontconfig-config (2.11.0-6.7) ...
+Selecting previously unselected package libexpat1:amd64.
+Preparing to unpack .../11-libexpat1_2.2.0-2+deb9u2_amd64.deb ...
+Unpacking libexpat1:amd64 (2.2.0-2+deb9u2) ...
+Selecting previously unselected package libpng16-16:amd64.
+Preparing to unpack .../12-libpng16-16_1.6.28-1+deb9u1_amd64.deb ...
+Unpacking libpng16-16:amd64 (1.6.28-1+deb9u1) ...
+Selecting previously unselected package libfreetype6:amd64.
+Preparing to unpack .../13-libfreetype6_2.6.3-3.2_amd64.deb ...
+Unpacking libfreetype6:amd64 (2.6.3-3.2) ...
+Selecting previously unselected package libfontconfig1:amd64.
+Preparing to unpack .../14-libfontconfig1_2.11.0-6.7+b1_amd64.deb ...
+Unpacking libfontconfig1:amd64 (2.11.0-6.7+b1) ...
+Selecting previously unselected package libjpeg62-turbo:amd64.
+Preparing to unpack .../15-libjpeg62-turbo_1%3a1.5.1-2_amd64.deb ...
+Unpacking libjpeg62-turbo:amd64 (1:1.5.1-2) ...
+Selecting previously unselected package libjbig0:amd64.
+Preparing to unpack .../16-libjbig0_2.1-3.1+b2_amd64.deb ...
+Unpacking libjbig0:amd64 (2.1-3.1+b2) ...
+Selecting previously unselected package libtiff5:amd64.
+Preparing to unpack .../17-libtiff5_4.0.8-2+deb9u4_amd64.deb ...
+Unpacking libtiff5:amd64 (4.0.8-2+deb9u4) ...
+Selecting previously unselected package libwebp6:amd64.
+Preparing to unpack .../18-libwebp6_0.5.2-1_amd64.deb ...
+Unpacking libwebp6:amd64 (0.5.2-1) ...
+Selecting previously unselected package libxdmcp6:amd64.
+Preparing to unpack .../19-libxdmcp6_1%3a1.1.2-3_amd64.deb ...
+Unpacking libxdmcp6:amd64 (1:1.1.2-3) ...
+Selecting previously unselected package libxcb1:amd64.
+Preparing to unpack .../20-libxcb1_1.12-1_amd64.deb ...
+Unpacking libxcb1:amd64 (1.12-1) ...
+Selecting previously unselected package libx11-data.
+Preparing to unpack .../21-libx11-data_2%3a1.6.4-3+deb9u1_all.deb ...
+Unpacking libx11-data (2:1.6.4-3+deb9u1) ...
+Selecting previously unselected package libx11-6:amd64.
+Preparing to unpack .../22-libx11-6_2%3a1.6.4-3+deb9u1_amd64.deb ...
+Unpacking libx11-6:amd64 (2:1.6.4-3+deb9u1) ...
+Selecting previously unselected package libxpm4:amd64.
+Preparing to unpack .../23-libxpm4_1%3a3.5.12-1_amd64.deb ...
+Unpacking libxpm4:amd64 (1:3.5.12-1) ...
+Selecting previously unselected package libgd3:amd64.
+Preparing to unpack .../24-libgd3_2.2.4-2+deb9u4_amd64.deb ...
+Unpacking libgd3:amd64 (2.2.4-2+deb9u4) ...
+Selecting previously unselected package libgeoip1:amd64.
+Preparing to unpack .../25-libgeoip1_1.6.9-4_amd64.deb ...
+Unpacking libgeoip1:amd64 (1.6.9-4) ...
+Selecting previously unselected package libxslt1.1:amd64.
+Preparing to unpack .../26-libxslt1.1_1.1.29-2.1_amd64.deb ...
+Unpacking libxslt1.1:amd64 (1.1.29-2.1) ...
+Selecting previously unselected package nginx.
+Preparing to unpack .../27-nginx_1.13.6-1~stretch_amd64.deb ...
+----------------------------------------------------------------------
+
+Thanks for using nginx!
+
+Please find the official documentation for nginx here:
+* http://nginx.org/en/docs/
+
+Please subscribe to nginx-announce mailing list to get
+the most important news about nginx:
+* http://nginx.org/en/support.html
+
+Commercial subscriptions for nginx are available on:
+* http://nginx.com/products/
+
+----------------------------------------------------------------------
+Unpacking nginx (1.13.6-1~stretch) ...
+Selecting previously unselected package nginx-module-geoip.
+Preparing to unpack .../28-nginx-module-geoip_1.13.6-1~stretch_amd64.deb ...
+Unpacking nginx-module-geoip (1.13.6-1~stretch) ...
+Selecting previously unselected package nginx-module-image-filter.
+Preparing to unpack .../29-nginx-module-image-filter_1.13.6-1~stretch_amd64.deb ...
+Unpacking nginx-module-image-filter (1.13.6-1~stretch) ...
+Selecting previously unselected package nginx-module-njs.
+Preparing to unpack .../30-nginx-module-njs_1.13.6.0.1.14-1~stretch_amd64.deb ...
+Unpacking nginx-module-njs (1.13.6.0.1.14-1~stretch) ...
+Selecting previously unselected package nginx-module-xslt.
+Preparing to unpack .../31-nginx-module-xslt_1.13.6-1~stretch_amd64.deb ...
+Unpacking nginx-module-xslt (1.13.6-1~stretch) ...
+Setting up libncurses5:amd64 (6.0+20161126-1+deb9u2) ...
+Setting up libexpat1:amd64 (2.2.0-2+deb9u2) ...
+Setting up libjpeg62-turbo:amd64 (1:1.5.1-2) ...
+Setting up libpng16-16:amd64 (1.6.28-1+deb9u1) ...
+Setting up libjbig0:amd64 (2.1-3.1+b2) ...
+Setting up fonts-dejavu-core (2.37-1) ...
+Setting up libtiff5:amd64 (4.0.8-2+deb9u4) ...
+Setting up gettext-base (0.19.8.1-2) ...
+Setting up libgeoip1:amd64 (1.6.9-4) ...
+Setting up libicu57:amd64 (57.1-6+deb9u2) ...
+Setting up libbsd0:amd64 (0.8.3-1) ...
+Setting up ucf (3.0036) ...
+debconf: unable to initialize frontend: Dialog
+debconf: (TERM is not set, so the dialog frontend is not usable.)
+debconf: falling back to frontend: Readline
+debconf: unable to initialize frontend: Readline
+debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC contains: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.24.1 /usr/local/share/perl/5.24.1 /usr/lib/x86_64-linux-gnu/perl5/5.24 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl/5.24 /usr/share/perl/5.24 /usr/local/lib/site_perl /usr/lib/x86_64-linux-gnu/perl-base .) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 7.)
+debconf: falling back to frontend: Teletype
+Setting up libxml2:amd64 (2.9.4+dfsg1-2.2+deb9u2) ...
+Setting up libfreetype6:amd64 (2.6.3-3.2) ...
+Setting up libxslt1.1:amd64 (1.1.29-2.1) ...
+Processing triggers for libc-bin (2.24-11+deb9u4) ...
+Setting up libssl1.1:amd64 (1.1.0k-1~deb9u1) ...
+debconf: unable to initialize frontend: Dialog
+debconf: (TERM is not set, so the dialog frontend is not usable.)
+debconf: falling back to frontend: Readline
+debconf: unable to initialize frontend: Readline
+debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC contains: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.24.1 /usr/local/share/perl/5.24.1 /usr/lib/x86_64-linux-gnu/perl5/5.24 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl/5.24 /usr/share/perl/5.24 /usr/local/lib/site_perl /usr/lib/x86_64-linux-gnu/perl-base .) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 7.)
+debconf: falling back to frontend: Teletype
+Setting up libxdmcp6:amd64 (1:1.1.2-3) ...
+Setting up libx11-data (2:1.6.4-3+deb9u1) ...
+Setting up libxau6:amd64 (1:1.0.8-1) ...
+Setting up libwebp6:amd64 (0.5.2-1) ...
+Setting up libedit2:amd64 (3.1-20160903-3) ...
+Setting up fontconfig-config (2.11.0-6.7) ...
+debconf: unable to initialize frontend: Dialog
+debconf: (TERM is not set, so the dialog frontend is not usable.)
+debconf: falling back to frontend: Readline
+debconf: unable to initialize frontend: Readline
+debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC contains: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.24.1 /usr/local/share/perl/5.24.1 /usr/lib/x86_64-linux-gnu/perl5/5.24 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl/5.24 /usr/share/perl/5.24 /usr/local/lib/site_perl /usr/lib/x86_64-linux-gnu/perl-base .) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 7.)
+debconf: falling back to frontend: Teletype
+Setting up nginx (1.13.6-1~stretch) ...
+invoke-rc.d: could not determine current runlevel
+invoke-rc.d: policy-rc.d denied execution of start.
+Setting up nginx-module-xslt (1.13.6-1~stretch) ...
+----------------------------------------------------------------------
+
+The xslt dynamic module for nginx has been installed.
+To enable this module, add the following to /etc/nginx/nginx.conf
+and reload nginx:
+
+    load_module modules/ngx_http_xslt_filter_module.so;
+
+Please refer to the module documentation for further details:
+http://nginx.org/en/docs/http/ngx_http_xslt_module.html
+
+----------------------------------------------------------------------
+Setting up libxcb1:amd64 (1.12-1) ...
+Setting up libfontconfig1:amd64 (2.11.0-6.7+b1) ...
+Setting up nginx-module-njs (1.13.6.0.1.14-1~stretch) ...
+----------------------------------------------------------------------
+
+The nginScript dynamic modules for nginx have been installed.
+To enable these modules, add the following to /etc/nginx/nginx.conf
+and reload nginx:
+
+    load_module modules/ngx_http_js_module.so;
+    load_module modules/ngx_stream_js_module.so;
+
+Please refer to the modules documentation for further details:
+http://nginx.org/en/docs/njs_about.html
+http://nginx.org/en/docs/http/ngx_http_js_module.html
+http://nginx.org/en/docs/stream/ngx_stream_js_module.html
+
+----------------------------------------------------------------------
+Setting up libx11-6:amd64 (2:1.6.4-3+deb9u1) ...
+Setting up nginx-module-geoip (1.13.6-1~stretch) ...
+----------------------------------------------------------------------
+
+The GeoIP dynamic modules for nginx have been installed.
+To enable these modules, add the following to /etc/nginx/nginx.conf
+and reload nginx:
+
+    load_module modules/ngx_http_geoip_module.so;
+    load_module modules/ngx_stream_geoip_module.so;
+
+Please refer to the modules documentation for further details:
+http://nginx.org/en/docs/http/ngx_http_geoip_module.html
+http://nginx.org/en/docs/stream/ngx_stream_geoip_module.html
+
+----------------------------------------------------------------------
+Setting up libxpm4:amd64 (1:3.5.12-1) ...
+Setting up libgd3:amd64 (2.2.4-2+deb9u4) ...
+Setting up nginx-module-image-filter (1.13.6-1~stretch) ...
+----------------------------------------------------------------------
+
+The image filter dynamic module for nginx has been installed.
+To enable this module, add the following to /etc/nginx/nginx.conf
+and reload nginx:
+
+    load_module modules/ngx_http_image_filter_module.so;
+
+Please refer to the module documentation for further details:
+http://nginx.org/en/docs/http/ngx_http_image_filter_module.html
+
+----------------------------------------------------------------------
+Processing triggers for libc-bin (2.24-11+deb9u4) ...
+Removing intermediate container 336516004a38
+ ---> 146a9ebd2264
+Step 5/7 : RUN ln -sf /dev/stdout /var/log/nginx/access.log 	&& ln -sf /dev/stderr /var/log/nginx/error.log
+ ---> Running in 52cb84e90292
+Removing intermediate container 52cb84e90292
+ ---> 1a466109f1d0
+Step 6/7 : EXPOSE 80 443
+ ---> Running in 0c3d2716180d
+Removing intermediate container 0c3d2716180d
+ ---> b764a46bcf04
+Step 7/7 : CMD ["nginx", "-g", "daemon off;"]
+ ---> Running in b7b9ad807ce1
+Removing intermediate container b7b9ad807ce1
+ ---> 54ca835b7cc2
+Successfully built 54ca835b7cc2
+Successfully tagged customnginx:latest
+]0;root@localhost:~/udemy-docker-mastery/dockerfile-sample-1[root@localhost dockerfile-sample-1]# [K[root@localhost dockerfile-sample-1]# c[Kdcok[K[K[Kocker container ls
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+]0;root@localhost:~/udemy-docker-mastery/dockerfile-sample-1[root@localhost dockerfile-sample-1]# docker container ls[K[Kimaa[Kg[K[K[K[K[K[K[K[K[K[K[K[K[K[Kimage ls
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+customnginx         latest              54ca835b7cc2        8 minutes ago       108MB
+httpd               latest              ee39f68eb241        6 days ago          154MB
+alpine              latest              b7b28af77ffe        7 days ago          5.58MB
+debian              stretch-slim        226ee7ba65a2        9 days ago          55.3MB
+mongo               latest              785c65f61380        2 weeks ago         412MB
+nginx               latest              f68d6e55e065        2 weeks ago         109MB
+ubuntu              latest              4c108a37151f        4 weeks ago         64.2MB
+mysql               latest              c7109f74d339        5 weeks ago         443MB
+centos              7                   9f38484d220f        4 months ago        202MB
+centos              latest              9f38484d220f        4 months ago        202MB
+alpine/git          latest              a1d22e4b51ad        4 months ago        27.5MB
+tomcat              8.0                 ef6a7c98d192        10 months ago       356MB
+elasticsearch       2                   5e9d896dc62c        10 months ago       479MB
+]0;root@localhost:~/udemy-docker-mastery/dockerfile-sample-1[root@localhost dockerfile-sample-1]# docker image inspect customnginx:latest 
+[
+    {
+        "Id": "sha256:54ca835b7cc2a9ffeb4c89e3e7c728cc7ca69a0480449347cf1c6c15b48a37b2",
+        "RepoTags": [
+            "customnginx:latest"
+        ],
+        "RepoDigests": [],
+        "Parent": "sha256:b764a46bcf046c13312288d04445b8a09123798bf86f4fc53f49d6380fa02e8c",
+        "Comment": "",
+        "Created": "2019-07-19T10:06:04.149992501Z",
+        "Container": "b7b9ad807ce161163f1bb6e97c0d6e7965e68c25b4087876ac1e7e0785e178a7",
+        "ContainerConfig": {
+            "Hostname": "b7b9ad807ce1",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "ExposedPorts": {
+                "443/tcp": {},
+                "80/tcp": {}
+            },
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "NGINX_VERSION=1.13.6-1~stretch",
+                "NJS_VERSION=1.13.6.0.1.14-1~stretch"
+            ],
+            "Cmd": [
+                "/bin/sh",
+                "-c",
+                "#(nop) ",
+                "CMD [\"nginx\" \"-g\" \"daemon off;\"]"
+            ],
+            "ArgsEscaped": true,
+            "Image": "sha256:b764a46bcf046c13312288d04445b8a09123798bf86f4fc53f49d6380fa02e8c",
+            "Volumes": null,
+            "WorkingDir": "",
+            "Entrypoint": null,
+            "OnBuild": null,
+            "Labels": {}
+        },
+        "DockerVersion": "18.09.7",
+        "Author": "",
+        "Config": {
+            "Hostname": "",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "ExposedPorts": {
+                "443/tcp": {},
+                "80/tcp": {}
+            },
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "NGINX_VERSION=1.13.6-1~stretch",
+                "NJS_VERSION=1.13.6.0.1.14-1~stretch"
+            ],
+            "Cmd": [
+                "nginx",
+                "-g",
+                "daemon off;"
+            ],
+            "ArgsEscaped": true,
+            "Image": "sha256:b764a46bcf046c13312288d04445b8a09123798bf86f4fc53f49d6380fa02e8c",
+            "Volumes": null,
+            "WorkingDir": "",
+            "Entrypoint": null,
+            "OnBuild": null,
+            "Labels": null
+        },
+        "Architecture": "amd64",
+        "Os": "linux",
+        "Size": 108428048,
+        "VirtualSize": 108428048,
+        "GraphDriver": {
+            "Data": {
+                "LowerDir": "/var/lib/docker/overlay2/83de8c74aff8e5f5afacdd2c1ae5f7842fb6cae0ceb2f078beb608984c62a8a0/diff:/var/lib/docker/overlay2/56d050209548ca7c8b300e753ca07696b1e7df385aa3a517c090885594284e81/diff",
+                "MergedDir": "/var/lib/docker/overlay2/63212dfecdd6a5c42a865652c75f13a90819bf188c52cd800d7f6aa2c48defb5/merged",
+                "UpperDir": "/var/lib/docker/overlay2/63212dfecdd6a5c42a865652c75f13a90819bf188c52cd800d7f6aa2c48defb5/diff",
+                "WorkDir": "/var/lib/docker/overlay2/63212dfecdd6a5c42a865652c75f13a90819bf188c52cd800d7f6aa2c48defb5/work"
+            },
+            "Name": "overlay2"
+        },
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:d56055da3352f918f4d8a42350385ea5b10d0906e746a8fbb4b850f9284deee5",
+                "sha256:f72cec1bbfa57ae98be8625e9502e147ff33c3c8e665348270cea685d59e404a",
+                "sha256:2aa8b0669ed6ee5e08a1d87c52019868df86351ee3a912a907586d2826e8e463"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "2019-07-19T15:36:04.162087276+05:30"
+        }
+    }
+]
+]0;root@localhost:~/udemy-docker-mastery/dockerfile-sample-1[root@localhost dockerfile-sample-1]# docker image inspect customnginx:latest ls[Kinspect customnginx:latest [1P[1P[1P[1P[1P[1P[1P[1@h[1@i[1@s[1@t[3@ory
+IMAGE               CREATED             CREATED BY                                      SIZE                COMMENT
+54ca835b7cc2        17 minutes ago      /bin/sh -c #(nop)  CMD ["nginx" "-g" "daemon…   0B                  
+b764a46bcf04        17 minutes ago      /bin/sh -c #(nop)  EXPOSE 443 80                0B                  
+1a466109f1d0        17 minutes ago      /bin/sh -c ln -sf /dev/stdout /var/log/nginx…   22B                 
+146a9ebd2264        17 minutes ago      /bin/sh -c apt-get update  && apt-get instal…   53.1MB              
+22f2683889c6        18 minutes ago      /bin/sh -c #(nop)  ENV NJS_VERSION=1.13.6.0.…   0B                  
+e5c20c3fc91b        18 minutes ago      /bin/sh -c #(nop)  ENV NGINX_VERSION=1.13.6-…   0B                  
+226ee7ba65a2        9 days ago          /bin/sh -c #(nop)  CMD ["bash"]                 0B                  
+<missing>           9 days ago          /bin/sh -c #(nop) ADD file:966bd7368f1e5a3e4…   55.3MB              
+]0;root@localhost:~/udemy-docker-mastery/dockerfile-sample-1[root@localhost dockerfile-sample-1]# docker image history customnginx:latest [K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[Kls customnginx
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+customnginx         latest              54ca835b7cc2        17 minutes ago      108MB
+]0;root@localhost:~/udemy-docker-mastery/dockerfile-sample-1[root@localhost dockerfile-sample-1]# docker image ls customnginxhistory customnginx:latest inspect[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cls[K[4@container[C[C[Cimage build -t customnginx .[20Pvim Dockerfile 
+[?1049h[?1h=[2;1H▽[6n[1;1H  [1;1H[1;50r[?12;25h[?12l[?25h[27m[m[H[2J[?25l[50;1H"Dockerfile" 54L, 2471C[>c[1;1HFROM debian:stretch-slim
+[34m# all images must have a FROM
+# usually from a minimal Linux distribution like debian or (even better) alpine
+# if you truly want to start with an empty container, use FROM scratch[m
+
+ENV NGINX_VERSION 1.13.6-1~stretch
+ENV NJS_VERSION   1.13.6.0.1.14-1~stretch
+[34m# optional environment variable that's used in later lines and set as envvar when container is running[m
+
+RUN apt-get update \[11;9H&& apt-get install --no-install-recommends --no-install-suggests -y gnupg1 \[12;9H&& \[13;9HNGINX_GPGKEY=573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62; \[14;9Hfound=[31m''[m; \[15;9Hfor server in \[16;17Hha.pool.sks-keyservers.net \[17;17Hhkp://keyserver.ubuntu.com:80 \[18;17Hhkp://p80.pool.sks-keyservers.net:80 \[19;17Hpgp.mit.edu \[20;9H; do \[21;17Hecho [31m"Fetching GPG key $NGINX_GPGKEY from $server"[m; \[22;17Hapt-key adv --keyserver [31m"$server"[m --keyserver-options timeout=10 --recv-keys [31m"$NGINX_GPGKEY"[m && found=yes && break; \[23;9Hdone; \[24;9Htest -z [31m"$found"[m && echo >&2 [31m"error: failed to fetch GPG key $NGINX_GPGKEY"[m && exit 1; \[25;9Hapt-get remove --purge -y gnupg1 && apt-get -y --purge autoremove && rm -rf /var/lib/apt/lists/* \[26;9H&& echo [31m"deb http://nginx.org/packages/mainline/debian/ stretch nginx"[m >> /etc/apt/sources.list \[27;9H&& apt-get update \[28;9H&& apt-get install --no-install-recommends --no-install-suggests -y \[29;49Hnginx=${NGINX_VERSION} \[30;49Hnginx-module-xslt=${NGINX_VERSION} \[31;49Hnginx-module-geoip=${NGINX_VERSION} \[32;49Hnginx-module-image-filter=${NGINX_VERSION} \[33;49Hnginx-module-njs=${NJS_VERSION} \[34;49Hgettext-base \[35;9H&& rm -rf /var/lib/apt/lists/*
+[34m# optional commands to run at shell inside container at build time
+# this one adds package repo for nginx from nginx.org and installs it[m
+
+RUN ln -sf /dev/stdout /var/log/nginx/access.log \[40;9H&& ln -sf /dev/stderr /var/log/nginx/error.log
+[34m# forward request and error logs to docker log collector[m
+
+EXPOSE 80 443
+[34m# expose these ports on the docker virtual network
+# you still need to use -p or -P to open/forward these ports on host[m
+
+CMD [[31m"nginx"[m, [31m"-g"[m, [31m"daemon off;"[m]
+[34m# required: run this command when container is launched
+# only one CMD allowed, so if there are multiple, last one wins[m[50;172H54,1[10CBot[49;1H[?12l[?25h[?25l
+[1m-- INSERT --[m[50;14H[K[50;172H54,1[10CBot[49;1H[?12l[?25h[?25l[50;173H3[48;1H[?12l[?25h[?25l[50;173H2[47;1H[?12l[?25h[?25l[50;173H1[46;1H[?12l[?25h[?25l[50;173H0[45;1H[?12l[?25h[?25l[50;172H49[44;1H[?12l[?25h[?25l[50;173H8[43;1H[?12l[?25h[?25l[50;173H9[44;1H[?12l[?25h[?25l[50;172H50[45;1H[?12l[?25h[?25l[50;172H49[44;1H[?12l[?25h[?25l[50;173H8[43;1H[?12l[?25h[?25l[50;175H2[43;2H[?12l[?25h[?25l[50;175H3[43;3H[?12l[?25h[?25l[50;175H4[43;4H[?12l[?25h[?25l[50;175H5[43;5H[?12l[?25h[?25l[50;175H6[43;6H[?12l[?25h[?25l[50;175H7[43;7H[?12l[?25h[?25l[50;175H8[43;8H[?12l[?25h[?25l[50;175H9[43;9H[?12l[?25h[?25l[50;175H10[43;10H[?12l[?25h[?25l[50;176H1[43;11H[?12l[?25h[?25l[50;176H2[43;12H[?12l[?25h[?25l[50;176H3[43;13H[?12l[?25h[?25l[50;176H4[43;14H[?12l[?25h[?25l[50;176H5[43;15H[?12l[?25h[50;1H[K[?25l[50;172H48,14[9CBot[43;14H[?12l[?25h[?25l[50;1H[1m-- INSERT --[m[50;172H[K[50;172H48,1[10C83%[43;49r[43;1H[L[1;50r[43;1Hx[50;172H[K[50;172H48,2[10C83%[43;2H[?12l[?25h[50;1H[K[?25l[50;172H48,1[10C83%[43;1H[?12l[?25h[?25l[50;1H[1m-- INSERT --[m[50;172H[K[50;172H48,1[10C71%[43;49r[43;1H[L[1;50r[43;1Hp[50;172H[K[50;172H48,2[10C71%[43;2H[?12l[?25h[50;1H[K[?25l[50;172H48,1[10C71%[43;1H[?12l[?25h[?25l[50;1H[1m-- INSERT --[m[50;172H[K[50;172H48,1[10C62%[43;49r[43;1H[L[1;50r[43;1Hx[50;172H[K[50;172H48,2[10C62%[43;2H[?12l[?25h[50;1H[K[?25l[50;172H48,1[10C62%[43;1H[?12l[?25h[?25l[50;1H[1m-- INSERT --[m[50;172H[K[50;172H48,1[10C55%[43;49r[43;1H[L[1;50r[43;1Hp[50;172H[K[50;172H48,2[10C55%[43;2H[?12l[?25h[50;1H[K[43;1H[?25l[50;172H48,1[10C55%[43;1H[?12l[?25h[?25l[50;172H[K[50;1H:[?12l[?25hq[?25l[?12l[?25h[?25l[1m[37m[41mE37: No write since last change (add ! to override)[m[120C48,1[10C55%[43;1H[?12l[?25h[?25l[50;1H[K[50;1H:[?12l[?25hq[?25l[?12l[?25h![?25l[?12l[?25h[?25l[50;1H[K[50;1H[?1l>[?12l[?25h[?1049l]0;root@localhost:~/udemy-docker-mastery/dockerfile-sample-1[root@localhost dockerfile-sample-1]# vim Dockerfile 
+[?1049h[?1h=[2;1H▽[6n[1;1H  [1;1H[1;50r[?12;25h[?12l[?25h[27m[m[H[2J[?25l[50;1H"Dockerfile" 54L, 2471C[>c[1;1H[34m# NOTE: this example is taken from the default Dockerfile for the official nginx Docker Hub Repo
+# https://hub.docker.com/_/nginx/
+# NOTE: This file is slightly different than the video, because nginx versions have been updated 
+#       to match the latest standards from docker hub... but it's doing the same thing as the video
+#       describes[m
+FROM debian:stretch-slim
+[34m# all images must have a FROM
+# usually from a minimal Linux distribution like debian or (even better) alpine
+# if you truly want to start with an empty container, use FROM scratch[m
+
+ENV NGINX_VERSION 1.13.6-1~stretch
+ENV NJS_VERSION   1.13.6.0.1.14-1~stretch
+[34m# optional environment variable that's used in later lines and set as envvar when container is running[m
+
+RUN apt-get update \[16;9H&& apt-get install --no-install-recommends --no-install-suggests -y gnupg1 \[17;9H&& \[18;9HNGINX_GPGKEY=573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62; \[19;9Hfound=[31m''[m; \[20;9Hfor server in \[21;17Hha.pool.sks-keyservers.net \[22;17Hhkp://keyserver.ubuntu.com:80 \[23;17Hhkp://p80.pool.sks-keyservers.net:80 \[24;17Hpgp.mit.edu \[25;9H; do \[26;17Hecho [31m"Fetching GPG key $NGINX_GPGKEY from $server"[m; \[27;17Hapt-key adv --keyserver [31m"$server"[m --keyserver-options timeout=10 --recv-keys [31m"$NGINX_GPGKEY"[m && found=yes && break; \[28;9Hdone; \[29;9Htest -z [31m"$found"[m && echo >&2 [31m"error: failed to fetch GPG key $NGINX_GPGKEY"[m && exit 1; \[30;9Hapt-get remove --purge -y gnupg1 && apt-get -y --purge autoremove && rm -rf /var/lib/apt/lists/* \[31;9H&& echo [31m"deb http://nginx.org/packages/mainline/debian/ stretch nginx"[m >> /etc/apt/sources.list \[32;9H&& apt-get update \[33;9H&& apt-get install --no-install-recommends --no-install-suggests -y \[34;49Hnginx=${NGINX_VERSION} \[35;49Hnginx-module-xslt=${NGINX_VERSION} \[36;49Hnginx-module-geoip=${NGINX_VERSION} \[37;49Hnginx-module-image-filter=${NGINX_VERSION} \[38;49Hnginx-module-njs=${NJS_VERSION} \[39;49Hgettext-base \[40;9H&& rm -rf /var/lib/apt/lists/*
+[34m# optional commands to run at shell inside container at build time
+# this one adds package repo for nginx from nginx.org and installs it[m
+
+RUN ln -sf /dev/stdout /var/log/nginx/access.log \[45;9H&& ln -sf /dev/stderr /var/log/nginx/error.log
+[34m# forward request and error logs to docker log collector[m
+
+EXPOSE 80 443
+[34m# expose these ports on the docker virtual network[m[50;172H48,1[10CTop[48;1H[?12l[?25h[?25l[50;175H2[48;2H[?12l[?25h[?25l[50;175H3[48;3H[?12l[?25h[?25l[50;175H4[48;4H[?12l[?25h[?25l[50;175H5[48;5H[?12l[?25h[?25l
+
+[1m-- INSERT --[m[50;14H[K[50;172H48,5[10CTop[48;5H[?12l[?25h[?25l[50;175H6[48;6H[?12l[?25h[?25l[50;175H7[48;7H[?12l[?25h[?25l[50;175H8[48;8H[?12l[?25h[?25l[50;175H9[48;9H[?12l[?25h[?25l[50;175H10[48;10H[?12l[?25h[?25l[50;176H1[48;11H[?12l[?25h[?25l[50;176H2[48;12H[?12l[?25h[?25l[50;176H3[48;13H[?12l[?25h[?25l[50;176H4[48;14H[?12l[?25h[?25l[50;176H5[48;15H[?12l[?25h[?25l[50;1H[K[50;1H"help.txt" [readonly] 221L, 8249C[1;1H[31mhelp.txt[m        For [36mVim version 7.4.[m  Last change: 2012 Dec 06[1;63H[K[2;1H[K[3;1H                        VIM - main help file[3;45H[K[4;1H                                                                         k[4;75H[K[5;1H      Move around:  Use the cursor keys, or "h" to go left,[12Ch   l
+                    "j" to go down, "k" to go up, "l" to go right.[7Cj
+Close this window:  Use ":q[35m<Enter>[m".
+   Get out of Vim:  Use ":qa![35m<Enter>[m" (careful, all changes are lost!).[8;72H[K[9;1H[K[10;1HJump to a subject:  Position the cursor on a tag (e.g. [36mbars[m) and hit [35mCTRL-][m.
+   With the mouse:  ":set mouse=a" to enable the mouse (in xterm or GUI).
+                    Double-click the left mouse button on a tag, e.g. [36mbars[m.
+        Jump back:  Type [35mCTRL-T[m or [35mCTRL-O[m (repeat to go further back).[13;71H[K[15;1HGet specific help:  It is possible to go directly to whatever you want help[16;9H            on, by giving an argument to the [36m:help[m command.[16;68H[K[17;9H    [8CIt is possible to further specify the context:[18;9H                                                [31mhelp-context[m[19;9H           [7C[35mWHAT                  PREPEND    EXAMPLE[m[20;9H              Normal mode command      (nothing)   :help x[21;17H      Visual mode command         v_[7C:help v_u[22;17H      Insert mode command         i_[7C:help i_[35m<Esc>[m[23;17H      Command-line command        :        :help :quit[24;17H      Command-line editing[8Cc_[7C:help c_[35m<Del>[m
+[1m[7mhelp.txt [Help][RO]                                                                                                                                                        1,1            Top[m[49;1H[7mDockerfile [+]                                                                                                                                                             48,14          80%[1;1H[?12l[?25h[1;1H[?25l[m[50;1H[K[50;1H:[?12l[?25hq[?25l[?12l[?25h![?25l[?12l[?25h[?25l[27m[m[H[2J[1;1H[34m# NOTE: this example is taken from the default Dockerfile for the official nginx Docker Hub Repo
+# https://hub.docker.com/_/nginx/
+# NOTE: This file is slightly different than the video, because nginx versions have been updated 
+#       to match the latest standards from docker hub... but it's doing the same thing as the video
+#       describes[m
+FROM debian:stretch-slim
+[34m# all images must have a FROM
+# usually from a minimal Linux distribution like debian or (even better) alpine
+# if you truly want to start with an empty container, use FROM scratch[m
+
+ENV NGINX_VERSION 1.13.6-1~stretch
+ENV NJS_VERSION   1.13.6.0.1.14-1~stretch
+[34m# optional environment variable that's used in later lines and set as envvar when container is running[m
+
+RUN apt-get update \[16;9H&& apt-get install --no-install-recommends --no-install-suggests -y gnupg1 \[17;9H&& \[18;9HNGINX_GPGKEY=573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62; \[19;9Hfound=[31m''[m; \[20;9Hfor server in \[21;17Hha.pool.sks-keyservers.net \[22;17Hhkp://keyserver.ubuntu.com:80 \[23;17Hhkp://p80.pool.sks-keyservers.net:80 \[24;17Hpgp.mit.edu \[25;9H; do \[26;17Hecho [31m"Fetching GPG key $NGINX_GPGKEY from $server"[m; \[27;17Hapt-key adv --keyserver [31m"$server"[m --keyserver-options timeout=10 --recv-keys [31m"$NGINX_GPGKEY"[m && found=yes && break; \[28;9Hdone; \[29;9Htest -z [31m"$found"[m && echo >&2 [31m"error: failed to fetch GPG key $NGINX_GPGKEY"[m && exit 1; \[30;9Hapt-get remove --purge -y gnupg1 && apt-get -y --purge autoremove && rm -rf /var/lib/apt/lists/* \[31;9H&& echo [31m"deb http://nginx.org/packages/mainline/debian/ stretch nginx"[m >> /etc/apt/sources.list \[32;9H&& apt-get update \[33;9H&& apt-get install --no-install-recommends --no-install-suggests -y \[34;49Hnginx=${NGINX_VERSION} \[35;49Hnginx-module-xslt=${NGINX_VERSION} \[36;49Hnginx-module-geoip=${NGINX_VERSION} \[37;49Hnginx-module-image-filter=${NGINX_VERSION} \[38;49Hnginx-module-njs=${NJS_VERSION} \[39;49Hgettext-base \[40;9H&& rm -rf /var/lib/apt/lists/*
+[34m# optional commands to run at shell inside container at build time
+# this one adds package repo for nginx from nginx.org and installs it[m
+
+RUN ln -sf /dev/stdout /var/log/nginx/access.log \[45;9H&& ln -sf /dev/stderr /var/log/nginx/error.log
+[34m# forward request and error logs to docker log collector[m
+
+EXPOSE 80 443
+[34m# expose these ports on the docker virtual network[m[50;172H48,14[9CTop[48;14H[?12l[?25h[?25l[50;173H7,0-1[47;1H[?12l[?25h[?25l[50;173H8,14 [48;14H[?12l[?25h[?25l
+
+[1m-- INSERT --[m[50;172H[K[50;172H48,14[9CTop[48;14H[?12l[?25h[?25l[50;176H5[48;15H[?12l[?25h[?25l8[50;176H6[48;16H[?12l[?25h[?25l0[50;176H7[48;17H[?12l[?25h[?25l8[50;176H8[48;18H[?12l[?25h[?25l0[50;176H9[48;19H[?12l[?25h[50;1H[K[48;18H[?25l[50;172H48,18[9CTop[48;18H[?12l[?25h[?25l[50;172H[K[50;1H:[?12l[?25hw[?25l[?12l[?25hq[?25l[?12l[?25h[?25l"Dockerfile" 54L, 2477C written
+[?1l>[?12l[?25h[?1049l]0;root@localhost:~/udemy-docker-mastery/dockerfile-sample-1[root@localhost dockerfile-sample-1]# doc[K[K[Kdocker i[K[K[K[K[K[K[K[Kdocker image build -t customnginx2 .
+Sending build context to Docker daemon  4.096kB
+Step 1/7 : FROM debian:stretch-slim
+ ---> 226ee7ba65a2
+Step 2/7 : ENV NGINX_VERSION 1.13.6-1~stretch
+ ---> Using cache
+ ---> e5c20c3fc91b
+Step 3/7 : ENV NJS_VERSION   1.13.6.0.1.14-1~stretch
+ ---> Using cache
+ ---> 22f2683889c6
+Step 4/7 : RUN apt-get update 	&& apt-get install --no-install-recommends --no-install-suggests -y gnupg1 	&& 	NGINX_GPGKEY=573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62; 	found=''; 	for server in 		ha.pool.sks-keyservers.net 		hkp://keyserver.ubuntu.com:80 		hkp://p80.pool.sks-keyservers.net:80 		pgp.mit.edu 	; do 		echo "Fetching GPG key $NGINX_GPGKEY from $server"; 		apt-key adv --keyserver "$server" --keyserver-options timeout=10 --recv-keys "$NGINX_GPGKEY" && found=yes && break; 	done; 	test -z "$found" && echo >&2 "error: failed to fetch GPG key $NGINX_GPGKEY" && exit 1; 	apt-get remove --purge -y gnupg1 && apt-get -y --purge autoremove && rm -rf /var/lib/apt/lists/* 	&& echo "deb http://nginx.org/packages/mainline/debian/ stretch nginx" >> /etc/apt/sources.list 	&& apt-get update 	&& apt-get install --no-install-recommends --no-install-suggests -y 						nginx=${NGINX_VERSION} 						nginx-module-xslt=${NGINX_VERSION} 						nginx-module-geoip=${NGINX_VERSION} 						nginx-module-image-filter=${NGINX_VERSION} 						nginx-module-njs=${NJS_VERSION} 						gettext-base 	&& rm -rf /var/lib/apt/lists/*
+ ---> Using cache
+ ---> 146a9ebd2264
+Step 5/7 : RUN ln -sf /dev/stdout /var/log/nginx/access.log 	&& ln -sf /dev/stderr /var/log/nginx/error.log
+ ---> Using cache
+ ---> 1a466109f1d0
+Step 6/7 : EXPOSE 80 443 8080
+ ---> Running in b86bcc35a870
+Removing intermediate container b86bcc35a870
+ ---> 1b25719316fd
+Step 7/7 : CMD ["nginx", "-g", "daemon off;"]
+ ---> Running in a43034d85263
+Removing intermediate container a43034d85263
+ ---> f22bc1cc2018
+Successfully built f22bc1cc2018
+Successfully tagged customnginx2:latest
+]0;root@localhost:~/udemy-docker-mastery/dockerfile-sample-1[root@localhost dockerfile-sample-1]# docker image build -t customnginx2 .[1P .3 .
+Sending build context to Docker daemon  4.096kB
+Step 1/7 : FROM debian:stretch-slim
+ ---> 226ee7ba65a2
+Step 2/7 : ENV NGINX_VERSION 1.13.6-1~stretch
+ ---> Using cache
+ ---> e5c20c3fc91b
+Step 3/7 : ENV NJS_VERSION   1.13.6.0.1.14-1~stretch
+ ---> Using cache
+ ---> 22f2683889c6
+Step 4/7 : RUN apt-get update 	&& apt-get install --no-install-recommends --no-install-suggests -y gnupg1 	&& 	NGINX_GPGKEY=573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62; 	found=''; 	for server in 		ha.pool.sks-keyservers.net 		hkp://keyserver.ubuntu.com:80 		hkp://p80.pool.sks-keyservers.net:80 		pgp.mit.edu 	; do 		echo "Fetching GPG key $NGINX_GPGKEY from $server"; 		apt-key adv --keyserver "$server" --keyserver-options timeout=10 --recv-keys "$NGINX_GPGKEY" && found=yes && break; 	done; 	test -z "$found" && echo >&2 "error: failed to fetch GPG key $NGINX_GPGKEY" && exit 1; 	apt-get remove --purge -y gnupg1 && apt-get -y --purge autoremove && rm -rf /var/lib/apt/lists/* 	&& echo "deb http://nginx.org/packages/mainline/debian/ stretch nginx" >> /etc/apt/sources.list 	&& apt-get update 	&& apt-get install --no-install-recommends --no-install-suggests -y 						nginx=${NGINX_VERSION} 						nginx-module-xslt=${NGINX_VERSION} 						nginx-module-geoip=${NGINX_VERSION} 						nginx-module-image-filter=${NGINX_VERSION} 						nginx-module-njs=${NJS_VERSION} 						gettext-base 	&& rm -rf /var/lib/apt/lists/*
+ ---> Using cache
+ ---> 146a9ebd2264
+Step 5/7 : RUN ln -sf /dev/stdout /var/log/nginx/access.log 	&& ln -sf /dev/stderr /var/log/nginx/error.log
+ ---> Using cache
+ ---> 1a466109f1d0
+Step 6/7 : EXPOSE 80 443 8080
+ ---> Using cache
+ ---> 1b25719316fd
+Step 7/7 : CMD ["nginx", "-g", "daemon off;"]
+ ---> Using cache
+ ---> f22bc1cc2018
+Successfully built f22bc1cc2018
+Successfully tagged customnginx3:latest
+]0;root@localhost:~/udemy-docker-mastery/dockerfile-sample-1[root@localhost dockerfile-sample-1]# docker image ls
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+customnginx2        latest              f22bc1cc2018        50 seconds ago      108MB
+customnginx3        latest              f22bc1cc2018        50 seconds ago      108MB
+customnginx         latest              54ca835b7cc2        28 minutes ago      108MB
+httpd               latest              ee39f68eb241        6 days ago          154MB
+alpine              latest              b7b28af77ffe        7 days ago          5.58MB
+debian              stretch-slim        226ee7ba65a2        9 days ago          55.3MB
+mongo               latest              785c65f61380        2 weeks ago         412MB
+nginx               latest              f68d6e55e065        2 weeks ago         109MB
+ubuntu              latest              4c108a37151f        4 weeks ago         64.2MB
+mysql               latest              c7109f74d339        5 weeks ago         443MB
+centos              7                   9f38484d220f        4 months ago        202MB
+centos              latest              9f38484d220f        4 months ago        202MB
+alpine/git          latest              a1d22e4b51ad        4 months ago        27.5MB
+tomcat              8.0                 ef6a7c98d192        10 months ago       356MB
+elasticsearch       2                   5e9d896dc62c        10 months ago       479MB
+]0;root@localhost:~/udemy-docker-mastery/dockerfile-sample-1[root@localhost dockerfile-sample-1]# docke [Kr image --help
+
+Usage:	docker image COMMAND
+
+Manage images
+
+Commands:
+  build       Build an image from a Dockerfile
+  history     Show the history of an image
+  import      Import the contents from a tarball to create a filesystem image
+  inspect     Display detailed information on one or more images
+  load        Load an image from a tar archive or STDIN
+  ls          List images
+  prune       Remove unused images
+  pull        Pull an image or a repository from a registry
+  push        Push an image or a repository to a registry
+  rm          Remove one or more images
+  save        Save one or more images to a tar archive (streamed to STDOUT by default)
+  tag         Create a tag TARGET_IMAGE that refers to SOURCE_IMAGE
+
+Run 'docker image COMMAND --help' for more information on a command.
+]0;root@localhost:~/udemy-docker-mastery/dockerfile-sample-1[root@localhost dockerfile-sample-1]# docker image --help[K[K[K[K[K[Krm customnginx2 customnginx3
+Untagged: customnginx2:latest
+Untagged: customnginx3:latest
+Deleted: sha256:f22bc1cc2018c70a8be35a1add5235e56062cc46a81fde54c2f51a047f8b03d6
+Deleted: sha256:1b25719316fdfab33d91f0393e3d24d8fc3a84a545859677bf687b1f7badccde
+]0;root@localhost:~/udemy-docker-mastery/dockerfile-sample-1[root@localhost dockerfile-sample-1]# docker image rm customnginx2 customnginx3--help[K
+
+Usage:	docker image COMMAND
+
+Manage images
+
+Commands:
+  build       Build an image from a Dockerfile
+  history     Show the history of an image
+  import      Import the contents from a tarball to create a filesystem image
+  inspect     Display detailed information on one or more images
+  load        Load an image from a tar archive or STDIN
+  ls          List images
+  prune       Remove unused images
+  pull        Pull an image or a repository from a registry
+  push        Push an image or a repository to a registry
+  rm          Remove one or more images
+  save        Save one or more images to a tar archive (streamed to STDOUT by default)
+  tag         Create a tag TARGET_IMAGE that refers to SOURCE_IMAGE
+
+Run 'docker image COMMAND --help' for more information on a command.
+]0;root@localhost:~/udemy-docker-mastery/dockerfile-sample-1[root@localhost dockerfile-sample-1]# docker image --helprm customnginx2 customnginx3--help[K[4Pls
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+customnginx         latest              54ca835b7cc2        28 minutes ago      108MB
+httpd               latest              ee39f68eb241        6 days ago          154MB
+alpine              latest              b7b28af77ffe        7 days ago          5.58MB
+debian              stretch-slim        226ee7ba65a2        9 days ago          55.3MB
+mongo               latest              785c65f61380        2 weeks ago         412MB
+nginx               latest              f68d6e55e065        2 weeks ago         109MB
+ubuntu              latest              4c108a37151f        4 weeks ago         64.2MB
+mysql               latest              c7109f74d339        5 weeks ago         443MB
+centos              7                   9f38484d220f        4 months ago        202MB
+centos              latest              9f38484d220f        4 months ago        202MB
+alpine/git          latest              a1d22e4b51ad        4 months ago        27.5MB
+tomcat              8.0                 ef6a7c98d192        10 months ago       356MB
+elasticsearch       2                   5e9d896dc62c        10 months ago       479MB
+]0;root@localhost:~/udemy-docker-mastery/dockerfile-sample-1[root@localhost dockerfile-sample-1]# docker image ls--help[4Pls[K[Krm centos:7
+Untagged: centos:7
+]0;root@localhost:~/udemy-docker-mastery/dockerfile-sample-1[root@localhost dockerfile-sample-1]# docker image rm centos:7ls[K
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+customnginx         latest              54ca835b7cc2        29 minutes ago      108MB
+httpd               latest              ee39f68eb241        6 days ago          154MB
+alpine              latest              b7b28af77ffe        7 days ago          5.58MB
+debian              stretch-slim        226ee7ba65a2        9 days ago          55.3MB
+mongo               latest              785c65f61380        2 weeks ago         412MB
+nginx               latest              f68d6e55e065        2 weeks ago         109MB
+ubuntu              latest              4c108a37151f        4 weeks ago         64.2MB
+mysql               latest              c7109f74d339        5 weeks ago         443MB
+centos              latest              9f38484d220f        4 months ago        202MB
+alpine/git          latest              a1d22e4b51ad        4 months ago        27.5MB
+tomcat              8.0                 ef6a7c98d192        10 months ago       356MB
+elasticsearch       2                   5e9d896dc62c        10 months ago       479MB
+]0;root@localhost:~/udemy-docker-mastery/dockerfile-sample-1[root@localhost dockerfile-sample-1]# [K[root@localhost dockerfile-sample-1]# [K[root@localhost dockerfile-sample-1]# docker login 
+Login with your Docker ID to push and pull images from Docker Hub. If you don't have a Docker ID, head over to https://hub.docker.com to create one.
+Username: koushik2019
+Password: 
+WARNING! Your password will be stored unencrypted in /root/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded
+]0;root@localhost:~/udemy-docker-mastery/dockerfile-sample-1[root@localhost dockerfile-sample-1]# docker push koushik2019/get-started:tagname
+The push refers to repository [docker.io/koushik2019/get-started]
+An image does not exist locally with the tag: koushik2019/get-started
+]0;root@localhost:~/udemy-docker-mastery/dockerfile-sample-1[root@localhost dockerfile-sample-1]# docker push koushik2019/get-started:tagname[K[K[K[K[K[K[K[K
+The push refers to repository [docker.io/koushik2019/get-started]
+An image does not exist locally with the tag: koushik2019/get-started
+]0;root@localhost:~/udemy-docker-mastery/dockerfile-sample-1[root@localhost dockerfile-sample-1]# docker pull koushik2019/get-started
+Using default tag: latest
+Error response from daemon: manifest for koushik2019/get-started:latest not found
+]0;root@localhost:~/udemy-docker-mastery/dockerfile-sample-1[root@localhost dockerfile-sample-1]# docker pull koushik2019/get-startedsh[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C:tagname[Kll[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Kdocker pull koushik2019/get-started
+Using default tag: latest
+Error response from daemon: manifest for koushik2019/get-started:latest not found
+]0;root@localhost:~/udemy-docker-mastery/dockerfile-sample-1[root@localhost dockerfile-sample-1]# docker pull koushik2019/get-started:part2
+part2: Pulling from koushik2019/get-started
+
+[1A[1K[K27833a3ba0a5: Pulling fs layer [1B
+[1A[1K[K8b35abcb27de: Pulling fs layer [1B
+[1A[1K[Kcd1fc6dee9fe: Pulling fs layer [1B
+[1A[1K[K35944cd3271f: Pulling fs layer [1B
+[1A[1K[K886922aef6c8: Pulling fs layer [1B
+[1A[1K[K9b34758a1dcc: Pulling fs layer [1B
+[1A[1K[Ke34976e0ad90: Pulling fs layer [1B[4A[1K[K35944cd3271f: Waiting [4B[3A[1K[K886922aef6c8: Waiting [3B[2A[1K[K9b34758a1dcc: Waiting [2B[1A[1K[Ke34976e0ad90: Waiting [1B[7A[1K[K27833a3ba0a5: Downloading [>                                                  ]  232.8kB/22.5MB[7B[7A[1K[K27833a3ba0a5: Downloading [=>                                                 ]  469.7kB/22.5MB[7B[7A[1K[K27833a3ba0a5: Downloading [==>                                                ]  1.154MB/22.5MB[7B[7A[1K[K27833a3ba0a5: Downloading [=====>                                             ]  2.538MB/22.5MB[7B[6A[1K[K8b35abcb27de: Downloading [>                                                  ]  26.62kB/2.528MB[6B[7A[1K[K27833a3ba0a5: Downloading [=======>                                           ]  3.476MB/22.5MB[7B[7A[1K[K27833a3ba0a5: Downloading [========>                                          ]  3.931MB/22.5MB[7B[6A[1K[K8b35abcb27de: Downloading [=>                                                 ]  52.26kB/2.528MB[6B[7A[1K[K27833a3ba0a5: Downloading [=========>                                         ]  4.386MB/22.5MB[7B[7A[1K[K27833a3ba0a5: Downloading [=============>                                     ]  6.229MB/22.5MB[7B[6A[1K[K8b35abcb27de: Downloading [=>                                                 ]     79kB/2.528MB[6B[7A[1K[K27833a3ba0a5: Downloading [===============>                                   ]  7.146MB/22.5MB[7B[6A[1K[K8b35abcb27de: Downloading [====>                                              ]  222.9kB/2.528MB[6B[7A[1K[K27833a3ba0a5: Downloading [=================>                                 ]  7.834MB/22.5MB[7B[6A[1K[K8b35abcb27de: Downloading [=====>                                             ]  259.8kB/2.528MB[6B[7A[1K[K27833a3ba0a5: Downloading [=================>                                 ]  8.064MB/22.5MB[7B[6A[1K[K8b35abcb27de: Downloading [=====>                                             ]  300.7kB/2.528MB[6B[6A[1K[K8b35abcb27de: Downloading [========>                                          ]    440kB/2.528MB[6B[7A[1K[K27833a3ba0a5: Downloading [====================>                              ]  9.207MB/22.5MB[7B[6A[1K[K8b35abcb27de: Downloading [==========>                                        ]  513.7kB/2.528MB[6B[7A[1K[K27833a3ba0a5: Downloading [=======================>                           ]  10.37MB/22.5MB[7B[6A[1K[K8b35abcb27de: Downloading [===================>                               ]  972.5kB/2.528MB[6B[5A[1K[Kcd1fc6dee9fe: Downloading [>                                                  ]  174.2kB/17.03MB[5B[7A[1K[K27833a3ba0a5: Downloading [==========================>                        ]  11.75MB/22.5MB[7B[6A[1K[K8b35abcb27de: Downloading [=====================>                             ]  1.104MB/2.528MB[6B[7A[1K[K27833a3ba0a5: Downloading [==========================>                        ]  11.98MB/22.5MB[7B[6A[1K[K8b35abcb27de: Downloading [======================>                            ]  1.136MB/2.528MB[6B[5A[1K[Kcd1fc6dee9fe: Downloading [=>                                                 ]  358.1kB/17.03MB[5B[6A[1K[K8b35abcb27de: Downloading [==========================>                        ]  1.341MB/2.528MB[6B[6A[1K[K8b35abcb27de: Verifying Checksum [6B[6A[1K[K8b35abcb27de: Download complete [6B[5A[1K[Kcd1fc6dee9fe: Downloading [==>                                                ]  898.8kB/17.03MB[5B[7A[1K[K27833a3ba0a5: Downloading [============================>                      ]  12.66MB/22.5MB[7B[5A[1K[Kcd1fc6dee9fe: Downloading [===>                                               ]  1.251MB/17.03MB[5B[7A[1K[K27833a3ba0a5: Downloading [=================================>                 ]  14.96MB/22.5MB[7B[5A[1K[Kcd1fc6dee9fe: Downloading [====>                                              ]  1.603MB/17.03MB[5B[7A[1K[K27833a3ba0a5: Downloading [=================================>                 ]  15.19MB/22.5MB[7B[5A[1K[Kcd1fc6dee9fe: Downloading [=====>                                             ]  1.783MB/17.03MB[5B[7A[1K[K27833a3ba0a5: Downloading [==================================>                ]  15.42MB/22.5MB[7B[5A[1K[Kcd1fc6dee9fe: Downloading [======>                                            ]  2.308MB/17.03MB[5B[7A[1K[K27833a3ba0a5: Downloading [==================================>                ]  15.65MB/22.5MB[7B[5A[1K[Kcd1fc6dee9fe: Downloading [========>                                          ]  2.832MB/17.03MB[5B[5A[1K[Kcd1fc6dee9fe: Downloading [========>                                          ]  3.004MB/17.03MB[5B[7A[1K[K27833a3ba0a5: Downloading [===================================>               ]  15.87MB/22.5MB[7B[5A[1K[Kcd1fc6dee9fe: Downloading [=========>                                         ]  3.369MB/17.03MB[5B[7A[1K[K27833a3ba0a5: Downloading [=======================================>           ]  17.94MB/22.5MB[7B[5A[1K[Kcd1fc6dee9fe: Downloading [============>                                      ]  4.417MB/17.03MB[5B[7A[1K[K27833a3ba0a5: Downloading [========================================>          ]  18.16MB/22.5MB[7B[5A[1K[Kcd1fc6dee9fe: Downloading [==============>                                    ]  4.774MB/17.03MB[5B[5A[1K[Kcd1fc6dee9fe: Downloading [=================>                                 ]  6.027MB/17.03MB[5B[7A[1K[K27833a3ba0a5: Downloading [============================================>      ]     20MB/22.5MB[7B[5A[1K[Kcd1fc6dee9fe: Downloading [=====================>                             ]  7.284MB/17.03MB[5B[7A[1K[K27833a3ba0a5: Downloading [===============================================>   ]  21.38MB/22.5MB[7B[5A[1K[Kcd1fc6dee9fe: Downloading [======================>                            ]  7.645MB/17.03MB[5B[5A[1K[Kcd1fc6dee9fe: Downloading [=========================>                         ]  8.726MB/17.03MB[5B[7A[1K[K27833a3ba0a5: Downloading [================================================>  ]  21.62MB/22.5MB[7B[5A[1K[Kcd1fc6dee9fe: Downloading [============================>                      ]  9.619MB/17.03MB[5B[5A[1K[Kcd1fc6dee9fe: Downloading [==============================>                    ]  10.33MB/17.03MB[5B[4A[1K[K35944cd3271f: Downloading [>                                                  ]  22.36kB/2.101MB[4B[5A[1K[Kcd1fc6dee9fe: Downloading [===================================>               ]  11.93MB/17.03MB[5B[4A[1K[K35944cd3271f: Downloading [==>                                                ]  116.8kB/2.101MB[4B[5A[1K[Kcd1fc6dee9fe: Downloading [=====================================>             ]  12.83MB/17.03MB[5B[4A[1K[K35944cd3271f: Downloading [=======>                                           ]  300.7kB/2.101MB[4B[4A[1K[K35944cd3271f: Downloading [=======>                                           ]  333.5kB/2.101MB[4B[5A[1K[Kcd1fc6dee9fe: Downloading [======================================>            ]  13.01MB/17.03MB[5B[5A[1K[Kcd1fc6dee9fe: Downloading [=======================================>           ]  13.56MB/17.03MB[5B[5A[1K[Kcd1fc6dee9fe: Downloading [===============================================>   ]  16.26MB/17.03MB[5B[4A[1K[K35944cd3271f: Downloading [========>                                          ]  366.3kB/2.101MB[4B[4A[1K[K35944cd3271f: Downloading [===================>                               ]    825kB/2.101MB[4B[4A[1K[K35944cd3271f: Downloading [=============================>                     ]  1.247MB/2.101MB[4B[5A[1K[Kcd1fc6dee9fe: Downloading [=================================================> ]  16.79MB/17.03MB[5B[5A[1K[Kcd1fc6dee9fe: Verifying Checksum [5B[5A[1K[Kcd1fc6dee9fe: Download complete [5B[4A[1K[K35944cd3271f: Downloading [==============================>                    ]   1.28MB/2.101MB[4B[4A[1K[K35944cd3271f: Downloading [=================================================> ]  2.091MB/2.101MB[4B[4A[1K[K35944cd3271f: Verifying Checksum [4B[4A[1K[K35944cd3271f: Download complete [4B[3A[1K[K886922aef6c8: Downloading [==================================================>]     126B/126B[3B[3A[1K[K886922aef6c8: Verifying Checksum [3B[3A[1K[K886922aef6c8: Download complete [3B[2A[1K[K9b34758a1dcc: Downloading [============================>                      ]     500B/879B[2B[2A[1K[K9b34758a1dcc: Downloading [==================================================>]     879B/879B[2B[2A[1K[K9b34758a1dcc: Verifying Checksum [2B[2A[1K[K9b34758a1dcc: Download complete [2B[1A[1K[Ke34976e0ad90: Downloading [>                                                  ]  38.24kB/3.798MB[1B[1A[1K[Ke34976e0ad90: Downloading [==>                                                ]  161.1kB/3.798MB[1B[1A[1K[Ke34976e0ad90: Downloading [===>                                               ]  292.2kB/3.798MB[1B[1A[1K[Ke34976e0ad90: Downloading [=======>                                           ]  554.3kB/3.798MB[1B[1A[1K[Ke34976e0ad90: Downloading [============>                                      ]  959.8kB/3.798MB[1B[1A[1K[Ke34976e0ad90: Downloading [===============>                                   ]  1.193MB/3.798MB[1B[1A[1K[Ke34976e0ad90: Downloading [=========================>                         ]  1.972MB/3.798MB[1B[1A[1K[Ke34976e0ad90: Downloading [================================>                  ]  2.438MB/3.798MB[1B[1A[1K[Ke34976e0ad90: Downloading [=====================================>             ]  2.832MB/3.798MB[1B[1A[1K[Ke34976e0ad90: Downloading [============================================>      ]  3.389MB/3.798MB[1B[1A[1K[Ke34976e0ad90: Downloading [==============================================>    ]  3.528MB/3.798MB[1B[1A[1K[Ke34976e0ad90: Downloading [===============================================>   ]  3.577MB/3.798MB[1B[1A[1K[Ke34976e0ad90: Verifying Checksum [1B[1A[1K[Ke34976e0ad90: Download complete [1B[7A[1K[K27833a3ba0a5: Retrying in 5 seconds [7B[7A[1K[K27833a3ba0a5: Retrying in 4 seconds [7B[7A[1K[K27833a3ba0a5: Retrying in 3 seconds [7B[7A[1K[K27833a3ba0a5: Retrying in 2 seconds [7B[7A[1K[K27833a3ba0a5: Retrying in 1 second [7B[7A[1K[K27833a3ba0a5: Downloading [>                                                  ]  8.659kB/780.4kB[7B[7A[1K[K27833a3ba0a5: Downloading [==>                                                ]  41.43kB/780.4kB[7B[7A[1K[K27833a3ba0a5: Downloading [==========>                                        ]  159.8kB/780.4kB[7B[7A[1K[K27833a3ba0a5: Downloading [==========================>                        ]  408.3kB/780.4kB[7B[7A[1K[K27833a3ba0a5: Downloading [===============================================>   ]  744.1kB/780.4kB[7B[7A[1K[K27833a3ba0a5: Verifying Checksum [7B[7A[1K[K27833a3ba0a5: Download complete [7B[7A[1K[K27833a3ba0a5: Extracting [>                                                  ]  229.4kB/22.5MB[7B[7A[1K[K27833a3ba0a5: Extracting [====>                                              ]  2.064MB/22.5MB[7B[7A[1K[K27833a3ba0a5: Extracting [======>                                            ]  2.982MB/22.5MB[7B[7A[1K[K27833a3ba0a5: Extracting [==========>                                        ]  4.588MB/22.5MB[7B[7A[1K[K27833a3ba0a5: Extracting [=============>                                     ]  6.193MB/22.5MB[7B[7A[1K[K27833a3ba0a5: Extracting [================>                                  ]  7.569MB/22.5MB[7B[7A[1K[K27833a3ba0a5: Extracting [====================>                              ]  9.404MB/22.5MB[7B[7A[1K[K27833a3ba0a5: Extracting [=======================>                           ]  10.78MB/22.5MB[7B[7A[1K[K27833a3ba0a5: Extracting [===========================>                       ]  12.39MB/22.5MB[7B[7A[1K[K27833a3ba0a5: Extracting [==============================>                    ]  13.76MB/22.5MB[7B[7A[1K[K27833a3ba0a5: Extracting [=================================>                 ]  14.91MB/22.5MB[7B[7A[1K[K27833a3ba0a5: Extracting [===================================>               ]  16.06MB/22.5MB[7B[7A[1K[K27833a3ba0a5: Extracting [======================================>            ]   17.2MB/22.5MB[7B[7A[1K[K27833a3ba0a5: Extracting [=========================================>         ]  18.58MB/22.5MB[7B[7A[1K[K27833a3ba0a5: Extracting [===========================================>       ]  19.73MB/22.5MB[7B[7A[1K[K27833a3ba0a5: Extracting [============================================>      ]  20.19MB/22.5MB[7B[7A[1K[K27833a3ba0a5: Extracting [==============================================>    ]  20.87MB/22.5MB[7B[7A[1K[K27833a3ba0a5: Extracting [==============================================>    ]   21.1MB/22.5MB[7B[7A[1K[K27833a3ba0a5: Extracting [===============================================>   ]  21.33MB/22.5MB[7B[7A[1K[K27833a3ba0a5: Extracting [===============================================>   ]  21.56MB/22.5MB[7B[7A[1K[K27833a3ba0a5: Extracting [=================================================> ]  22.25MB/22.5MB[7B[7A[1K[K27833a3ba0a5: Extracting [==================================================>]   22.5MB/22.5MB[7B[7A[1K[K27833a3ba0a5: Pull complete [7B[6A[1K[K8b35abcb27de: Extracting [>                                                  ]  32.77kB/2.528MB[6B[6A[1K[K8b35abcb27de: Extracting [================>                                  ]  819.2kB/2.528MB[6B[6A[1K[K8b35abcb27de: Extracting [================================================>  ]  2.458MB/2.528MB[6B[6A[1K[K8b35abcb27de: Extracting [==================================================>]  2.528MB/2.528MB[6B[6A[1K[K8b35abcb27de: Pull complete [6B[5A[1K[Kcd1fc6dee9fe: Extracting [>                                                  ]  196.6kB/17.03MB[5B[5A[1K[Kcd1fc6dee9fe: Extracting [========>                                          ]  2.753MB/17.03MB[5B[5A[1K[Kcd1fc6dee9fe: Extracting [============>                                      ]  4.325MB/17.03MB[5B[5A[1K[Kcd1fc6dee9fe: Extracting [=================>                                 ]  5.898MB/17.03MB[5B[5A[1K[Kcd1fc6dee9fe: Extracting [=====================>                             ]  7.471MB/17.03MB[5B[5A[1K[Kcd1fc6dee9fe: Extracting [==========================>                        ]  9.044MB/17.03MB[5B[5A[1K[Kcd1fc6dee9fe: Extracting [=================================>                 ]   11.4MB/17.03MB[5B[5A[1K[Kcd1fc6dee9fe: Extracting [=====================================>             ]  12.78MB/17.03MB[5B[5A[1K[Kcd1fc6dee9fe: Extracting [=========================================>         ]  14.16MB/17.03MB[5B[5A[1K[Kcd1fc6dee9fe: Extracting [=============================================>     ]  15.53MB/17.03MB[5B[5A[1K[Kcd1fc6dee9fe: Extracting [===============================================>   ]  16.12MB/17.03MB[5B[5A[1K[Kcd1fc6dee9fe: Extracting [=================================================> ]  16.91MB/17.03MB[5B[5A[1K[Kcd1fc6dee9fe: Extracting [==================================================>]  17.03MB/17.03MB[5B[5A[1K[Kcd1fc6dee9fe: Pull complete [5B[4A[1K[K35944cd3271f: Extracting [>                                                  ]  32.77kB/2.101MB[4B[4A[1K[K35944cd3271f: Extracting [===========>                                       ]  491.5kB/2.101MB[4B[4A[1K[K35944cd3271f: Extracting [=========================================>         ]  1.737MB/2.101MB[4B[4A[1K[K35944cd3271f: Extracting [==================================================>]  2.101MB/2.101MB[4B[4A[1K[K35944cd3271f: Pull complete [4B[3A[1K[K886922aef6c8: Extracting [==================================================>]     126B/126B[3B[3A[1K[K886922aef6c8: Extracting [==================================================>]     126B/126B[3B[3A[1K[K886922aef6c8: Pull complete [3B[2A[1K[K9b34758a1dcc: Extracting [==================================================>]     879B/879B[2B[2A[1K[K9b34758a1dcc: Extracting [==================================================>]     879B/879B[2B[2A[1K[K9b34758a1dcc: Pull complete [2B[1A[1K[Ke34976e0ad90: Extracting [>                                                  ]  65.54kB/3.798MB[1B[1A[1K[Ke34976e0ad90: Extracting [==================>                                ]  1.376MB/3.798MB[1B[1A[1K[Ke34976e0ad90: Extracting [===============================>                   ]  2.359MB/3.798MB[1B[1A[1K[Ke34976e0ad90: Extracting [=======================================>           ]  3.015MB/3.798MB[1B[1A[1K[Ke34976e0ad90: Extracting [==================================================>]  3.798MB/3.798MB[1B[1A[1K[Ke34976e0ad90: Extracting [==================================================>]  3.798MB/3.798MB[1B[1A[1K[Ke34976e0ad90: Pull complete [1BDigest: sha256:a22382f1ade7324a9acc7159fd27f289a812f1ed05fd6431ba829731917019a7
+Status: Downloaded newer image for koushik2019/get-started:part2
+]0;root@localhost:~/udemy-docker-mastery/dockerfile-sample-1[root@localhost dockerfile-sample-1]# docker container run -d koushik2019/get-started
+Unable to find image 'koushik2019/get-started:latest' locally
+docker: Error response from daemon: manifest for koushik2019/get-started:latest not found.
+See 'docker run --help'.
+]0;root@localhost:~/udemy-docker-mastery/dockerfile-sample-1[root@localhost dockerfile-sample-1]# docker container run -d koushik2019/get-started:part2
+101b76d65e80017b37a1184d29d8ceac125c3de2e626348cb4c61a206edc775e
+]0;root@localhost:~/udemy-docker-mastery/dockerfile-sample-1[root@localhost dockerfile-sample-1]# docker container ex[K[Krun ex[K[K-it nslookp[Kup koushi[K[K[K[K[K[Kkoushik2019/get-started:part2
+Unable to find image 'nslookup:latest' locally
+^C
+]0;root@localhost:~/udemy-docker-mastery/dockerfile-sample-1[root@localhost dockerfile-sample-1]# docker container run -it nslookup koushik2019/get-started:part2[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K101b76d65e80017b37a1184d29d8ceac125c3de2e626348cb4c61a206edc775e
+Unable to find image 'nslookup:latest' locally
+^C
+]0;root@localhost:~/udemy-docker-mastery/dockerfile-sample-1[root@localhost dockerfile-sample-1]# docker container run -it nslookup 101b76d65e80017b37a1184d29d8ceac125c3de2e626348cb4c61a206edc775e
+Unable to find image 'nslookup:latest' locally
+docker: Error response from daemon: pull access denied for nslookup, repository does not exist or may require 'docker login'.
+See 'docker run --help'.
+]0;root@localhost:~/udemy-docker-mastery/dockerfile-sample-1[root@localhost dockerfile-sample-1]# docker container ls
+CONTAINER ID        IMAGE                           COMMAND             CREATED              STATUS              PORTS               NAMES
+101b76d65e80        koushik2019/get-started:part2   "python app.py"     About a minute ago   Up About a minute   80/tcp              fervent_matsumoto
+]0;root@localhost:~/udemy-docker-mastery/dockerfile-sample-1[root@localhost dockerfile-sample-1]# docker container rm 101b76d65e80
+Error response from daemon: You cannot remove a running container 101b76d65e80017b37a1184d29d8ceac125c3de2e626348cb4c61a206edc775e. Stop the container before attempting removal or force remove
+]0;root@localhost:~/udemy-docker-mastery/dockerfile-sample-1[root@localhost dockerfile-sample-1]# docker container rm 101b76d65e80[C 101b76d65e80- 101b76d65e80f 101b76d65e80
+101b76d65e80
+]0;root@localhost:~/udemy-docker-mastery/dockerfile-sample-1[root@localhost dockerfile-sample-1]# docker container rm -f 101b76d65e80[3P101b76d65e80ls[K
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+]0;root@localhost:~/udemy-docker-mastery/dockerfile-sample-1[root@localhost dockerfile-sample-1]# docker image ls
+REPOSITORY                TAG                 IMAGE ID            CREATED             SIZE
+customnginx               latest              54ca835b7cc2        4 hours ago         108MB
+httpd                     latest              ee39f68eb241        6 days ago          154MB
+alpine                    latest              b7b28af77ffe        7 days ago          5.58MB
+debian                    stretch-slim        226ee7ba65a2        9 days ago          55.3MB
+mongo                     latest              785c65f61380        2 weeks ago         412MB
+nginx                     latest              f68d6e55e065        2 weeks ago         109MB
+ubuntu                    latest              4c108a37151f        4 weeks ago         64.2MB
+mysql                     latest              c7109f74d339        5 weeks ago         443MB
+koushik2019/get-started   part2               c13f7c1f84f3        2 months ago        131MB
+centos                    latest              9f38484d220f        4 months ago        202MB
+alpine/git                latest              a1d22e4b51ad        4 months ago        27.5MB
+tomcat                    8.0                 ef6a7c98d192        10 months ago       356MB
+elasticsearch             2                   5e9d896dc62c        10 months ago       479MB
+]0;root@localhost:~/udemy-docker-mastery/dockerfile-sample-1[root@localhost dockerfile-sample-1]# docker image inspect koushik2019/get-started
+[]
+Error: No such image: koushik2019/get-started
+]0;root@localhost:~/udemy-docker-mastery/dockerfile-sample-1[root@localhost dockerfile-sample-1]# docker image inspect koushik2019/get-started:part2 
+[
+    {
+        "Id": "sha256:c13f7c1f84f34227b93d7dc4c10af2561ed2fba47559d82b71105d983bcdd8ae",
+        "RepoTags": [
+            "koushik2019/get-started:part2"
+        ],
+        "RepoDigests": [
+            "koushik2019/get-started@sha256:a22382f1ade7324a9acc7159fd27f289a812f1ed05fd6431ba829731917019a7"
+        ],
+        "Parent": "",
+        "Comment": "",
+        "Created": "2019-04-26T20:49:58.049096176Z",
+        "Container": "67df0da9a930b5a33c86eb025055f335841804cafa0d0df4751d1367d1db4669",
+        "ContainerConfig": {
+            "Hostname": "67df0da9a930",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "ExposedPorts": {
+                "80/tcp": {}
+            },
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "LANG=C.UTF-8",
+                "PYTHONIOENCODING=UTF-8",
+                "GPG_KEY=C01E1CAD5EA2C4F0B8E3571504C367C218ADD4FF",
+                "PYTHON_VERSION=2.7.16",
+                "PYTHON_PIP_VERSION=19.1",
+                "NAME=World"
+            ],
+            "Cmd": [
+                "/bin/sh",
+                "-c",
+                "#(nop) ",
+                "CMD [\"python\" \"app.py\"]"
+            ],
+            "ArgsEscaped": true,
+            "Image": "sha256:9670e0ee268655089b09b0cbfc3393878ef52d3b642e7aeafe038716a24168b3",
+            "Volumes": null,
+            "WorkingDir": "/app",
+            "Entrypoint": null,
+            "OnBuild": null,
+            "Labels": {}
+        },
+        "DockerVersion": "18.09.5",
+        "Author": "",
+        "Config": {
+            "Hostname": "",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "ExposedPorts": {
+                "80/tcp": {}
+            },
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "LANG=C.UTF-8",
+                "PYTHONIOENCODING=UTF-8",
+                "GPG_KEY=C01E1CAD5EA2C4F0B8E3571504C367C218ADD4FF",
+                "PYTHON_VERSION=2.7.16",
+                "PYTHON_PIP_VERSION=19.1",
+                "NAME=World"
+            ],
+            "Cmd": [
+                "python",
+                "app.py"
+            ],
+            "ArgsEscaped": true,
+            "Image": "sha256:9670e0ee268655089b09b0cbfc3393878ef52d3b642e7aeafe038716a24168b3",
+            "Volumes": null,
+            "WorkingDir": "/app",
+            "Entrypoint": null,
+            "OnBuild": null,
+            "Labels": null
+        },
+        "Architecture": "amd64",
+        "Os": "linux",
+        "Size": 131029745,
+        "VirtualSize": 131029745,
+        "GraphDriver": {
+            "Data": {
+                "LowerDir": "/var/lib/docker/overlay2/d04743f08a78504d1bc8374b144145a6ff7b067c75124d81c952937d7e5087fd/diff:/var/lib/docker/overlay2/2832c076bd2f648e00359af7e2a305fe9912c36a8934baaa65b99064206fdb12/diff:/var/lib/docker/overlay2/9323c5c668974ba15336ec8320fcf24950bfe44a0b90e964a98585912f2b1c8c/diff:/var/lib/docker/overlay2/6754dd209b0d2da2c726d8b933588cf378cb72ddfebf6b71a9865605458c031a/diff:/var/lib/docker/overlay2/9afd91af3214bae92b630818194d2e6cefdbf590fe4c08dddabe655a313b29ee/diff:/var/lib/docker/overlay2/114ea04fcb9b2caccb14f3688adfa8294fe6608d4dddc9907daf3e8ad4781398/diff",
+                "MergedDir": "/var/lib/docker/overlay2/dc46eaa9bbebe90117ff31a05f2747626057be972c8c91c6f2c3ac0f709a8a14/merged",
+                "UpperDir": "/var/lib/docker/overlay2/dc46eaa9bbebe90117ff31a05f2747626057be972c8c91c6f2c3ac0f709a8a14/diff",
+                "WorkDir": "/var/lib/docker/overlay2/dc46eaa9bbebe90117ff31a05f2747626057be972c8c91c6f2c3ac0f709a8a14/work"
+            },
+            "Name": "overlay2"
+        },
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:5dacd731af1b0386ead06c8b1feff9f65d9e0bdfec032d2cd0bc03690698feda",
+                "sha256:b827ad64bbf6e0f612566b5524db2b0aa69231b4d72897142e311bc0f7f23cbe",
+                "sha256:43ab60ec448a5abbe9765cd821ab4b71ed28a077a3261702d8ada6c970829fb8",
+                "sha256:b1f0ac2db4afcb926a2d427256da846ccf2c5d1b5984b9a4fbda628c17f3e7d3",
+                "sha256:37520e8e6e1c3959d4889b204cf865994521e5e57068d1b4a019ba9c20b8a9e5",
+                "sha256:e2d908aa78e348d76f1886c661e5515b7424a39e3f6f01a2dce5170223edcdc6",
+                "sha256:9c5fde26ecc0b738be7dc00f9ff2e3ce8dbe3d459a87e82a8a48c8fec70776c5"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "0001-01-01T00:00:00Z"
+        }
+    }
+]
+]0;root@localhost:~/udemy-docker-mastery/dockerfile-sample-1[root@localhost dockerfile-sample-1]# docker image inspect koushik2019/get-started:part2 [C[C[C[1P[1P[1P[1P[1P[1P[1P[1@h[1@i[1@s[4@tory
+IMAGE               CREATED             CREATED BY                                      SIZE                COMMENT
+c13f7c1f84f3        2 months ago        /bin/sh -c #(nop)  CMD ["python" "app.py"]      0B                  
+<missing>           2 months ago        /bin/sh -c #(nop)  ENV NAME=World               0B                  
+<missing>           2 months ago        /bin/sh -c #(nop)  EXPOSE 80                    0B                  
+<missing>           2 months ago        /bin/sh -c pip install --trusted-host pypi.p…   10.7MB              
+<missing>           2 months ago        /bin/sh -c #(nop) COPY dir:42d82fc6731e03ecc…   1.19kB              
+<missing>           2 months ago        /bin/sh -c #(nop) WORKDIR /app                  0B                  
+<missing>           2 months ago        /bin/sh -c #(nop)  CMD ["python2"]              0B                  
+<missing>           2 months ago        /bin/sh -c set -ex;   savedAptMark="$(apt-ma…   7.26MB              
+<missing>           2 months ago        /bin/sh -c #(nop)  ENV PYTHON_PIP_VERSION=19…   0B                  
+<missing>           3 months ago        /bin/sh -c set -ex   && savedAptMark="$(apt-…   51.3MB              
+<missing>           3 months ago        /bin/sh -c #(nop)  ENV PYTHON_VERSION=2.7.16    0B                  
+<missing>           3 months ago        /bin/sh -c #(nop)  ENV GPG_KEY=C01E1CAD5EA2C…   0B                  
+<missing>           3 months ago        /bin/sh -c apt-get update && apt-get install…   6.48MB              
+<missing>           3 months ago        /bin/sh -c #(nop)  ENV PYTHONIOENCODING=UTF-8   0B                  
+<missing>           3 months ago        /bin/sh -c #(nop)  ENV LANG=C.UTF-8             0B                  
+<missing>           3 months ago        /bin/sh -c #(nop)  ENV PATH=/usr/local/bin:/…   0B                  
+<missing>           3 months ago        /bin/sh -c #(nop)  CMD ["bash"]                 0B                  
+<missing>           3 months ago        /bin/sh -c #(nop) ADD file:4fc310c0cb879c876…   55.3MB              
+]0;root@localhost:~/udemy-docker-mastery/dockerfile-sample-1[root@localhost dockerfile-sample-1]# docker image rm koushik2019/get-started:part2
+Untagged: koushik2019/get-started:part2
+Untagged: koushik2019/get-started@sha256:a22382f1ade7324a9acc7159fd27f289a812f1ed05fd6431ba829731917019a7
+Deleted: sha256:c13f7c1f84f34227b93d7dc4c10af2561ed2fba47559d82b71105d983bcdd8ae
+Deleted: sha256:5379c3ad60a3a7d7724b9929641262261a44396180f6f4f02b2ef145da7d8a8f
+Deleted: sha256:70f72e0f77ad191122c495082d0757255c936b8e5ba84221db324208b90a963f
+Deleted: sha256:4a2db28d816038c21f4a26e04160c50d73030a7322fd0975d1ede92c43aa947d
+Deleted: sha256:2c5696c46912d9721cf36e2dfda361dd69b7287048c8339bbb56542cbdacfe81
+Deleted: sha256:f1ceb216b669a9110abd5111e5c0158bf6ab864b73f977ab2200163fbe9bda2d
+Deleted: sha256:beef2a3fbd7f6e2b2edef1fdd6ada839633596eebac8678c53c4fbb7a7229434
+Deleted: sha256:5dacd731af1b0386ead06c8b1feff9f65d9e0bdfec032d2cd0bc03690698feda
+]0;root@localhost:~/udemy-docker-mastery/dockerfile-sample-1[root@localhost dockerfile-sample-1]# docker image pull kos[K[K[Kkousshik[K[K[K[K[K[K[K[Kkoushik2019/get-started:part2koushik2019/get-started:part2^C
+]0;root@localhost:~/udemy-docker-mastery/dockerfile-sample-1[root@localhost dockerfile-sample-1]# dc[Kocker image pull koushik2019/get-started:part2
+part2: Pulling from koushik2019/get-started
+
+[1A[1K[K27833a3ba0a5: Pulling fs layer [1B
+[1A[1K[K8b35abcb27de: Pulling fs layer [1B
+[1A[1K[Kcd1fc6dee9fe: Pulling fs layer [1B
+[1A[1K[K35944cd3271f: Pulling fs layer [1B
+[1A[1K[K886922aef6c8: Pulling fs layer [1B
+[1A[1K[K9b34758a1dcc: Pulling fs layer [1B
+[1A[1K[Ke34976e0ad90: Pulling fs layer [1B[4A[1K[K35944cd3271f: Waiting [4B[3A[1K[K886922aef6c8: Waiting [3B[2A[1K[K9b34758a1dcc: Waiting [2B[1A[1K[Ke34976e0ad90: Waiting [1B[7A[1K[K27833a3ba0a5: Downloading [>                                                  ]  228.5kB/22.5MB[7B[7A[1K[K27833a3ba0a5: Downloading [=>                                                 ]  457.9kB/22.5MB[7B[7A[1K[K27833a3ba0a5: Downloading [==>                                                ]  924.4kB/22.5MB[7B[7A[1K[K27833a3ba0a5: Downloading [====>                                              ]  2.088MB/22.5MB[7B[6A[1K[K8b35abcb27de: Downloading [>                                                  ]  26.46kB/2.528MB[6B[6A[1K[K8b35abcb27de: Downloading [=>                                                 ]  52.38kB/2.528MB[6B[6A[1K[K8b35abcb27de: Downloading [=>                                                 ]  81.53kB/2.528MB[6B[7A[1K[K27833a3ba0a5: Downloading [=====>                                             ]  2.555MB/22.5MB[7B^C
+]0;root@localhost:~/udemy-docker-mastery/dockerfile-sample-1[root@localhost dockerfile-sample-1]# docker image pull koushik2019/get-started:part2[2Prm[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C
+Error: No such image: koushik2019/get-started:part2
+]0;root@localhost:~/udemy-docker-mastery/dockerfile-sample-1[root@localhost dockerfile-sample-1]# [K[root@localhost dockerfile-sample-1]# [K[root@localhost dockerfile-sample-1]# [K[root@localhost dockerfile-sample-1]# [K[root@localhost dockerfile-sample-1]# exit
+logout
